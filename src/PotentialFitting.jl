@@ -2,27 +2,47 @@ module PotentialFitting
 
 using PotentialCalculation, ScikitLearn
 
-export AbstractPotential, AbstractClusterPotential, AbstractPairPotential,
-       LennardJones, MoleculePairPotential, index_transformation, r_to_potential,
-       add_identicals, get_potential, print_potential,
+export AbstractPotential,
+       AbstractClusterPotential,
+       AbstractPairPotential,
+       calculate_potential,
+       get_potential!,
+       MoleculePairPotential,
+       PairPotentialTopology,
+       PairTopologyIndices,
+       potential_variables,
+       PotentialTopology,
+
+       FitData,
+       Fitter,
        fit_potential!,
-       Fitter, FitData, setweight_e_more!, setweight_e_less!, give_fittable_x,
-       give_predictable_x, predict_potential,
-       plot_calculated_by_index, plot_compare_by_index, points_from, write_to_xyz,
-       visualize_points, visualize_data_points, vizualize_by_energy_diff
+       give_fittable_x,
+       give_predictable_x,
+       predict_potential,
+       setweight_e_less!,
+       setweight_e_more!,
+
+       min_distance,
+       plot_potential,
+       plot_compare,
+       visualize_points,
+
+       LennardJones,
+       LJ
 
 
 
 include("potentials.jl")
 include("fit.jl")
 include("visualize.jl")
+include("potentials/LennardJones.jl")
+
 
 
 using .potentials
 using .fit
 using .visualize
+using .lennardjones
 
-
-greet() = print("Hello World!")
 
 end # module

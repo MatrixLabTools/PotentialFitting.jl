@@ -1,148 +1,148 @@
 module potentials
 
-export AbstractPotential, AbstractClusterPotential, AbstractPairPotential,
-       LennardJones, MoleculePairPotential, index_transformation, r_to_potential,
-       add_identicals, get_potential, print_potential
+export AbstractPotential,
+       AbstractClusterPotential,
+       AbstractPairPotential,
+       calculate_potential,
+       get_potential!,
+       MoleculePairPotential,
+       PairPotentialTopology,
+       PairTopologyIndices,
+       potential_variables,
+       PotentialTopology
 
 using PotentialCalculation
 
+
+
+
 abstract type AbstractPotential end
+
+"""
+    AbstractClusterPotential <: AbstractPotential
+
+Potentials between groups of atoms
+"""
 abstract type AbstractClusterPotential <: AbstractPotential end
+
+"""
+    AbstractPairPotential  <: AbstractPotential
+Potential that depends only on distance between two atoms
+"""
 abstract type AbstractPairPotential  <: AbstractPotential end
 
-mutable struct LennardJones <: AbstractPairPotential
-    C6::Float64
-    C12::Float64
-    LennardJones() = new(0.0,0.0)
-    LennardJones(c6,c12) = new(c6,c12)
-end
-
-#Number of parameters - not used atm
-Base.length(t::Type{LennardJones}) = 2
-Base.length(l::LennardJones) = 2
 
 
-mutable struct Buckingham <: AbstractPairPotential
-    A::Float64
-    B::Float64
-    C::Float64
-    Buckingham() = new(0.0, 0.0, 0.0)
-    Buckingham(A,B,C) = new(A,B,C)
+
+struct PairTopologyIndices
+    first::Vector{Int64}
+    second::Vector{Int64}
+    PairTopologyIndices(first::Vector{Int64}, second::Vector{Int64}) =  new(first, second)
+    PairTopologyIndices(first, second) =  new(collect(first), collect(second))
+    PairTopologyIndices(first::Integer, second::Integer) = new(Int64[first], Int64[second])
+    PairTopologyIndices(first, second::Integer) = new(collect(first), Int64[second])
+    PairTopologyIndices(first::Integer, second) = new(Int64[first], collect(second))
 end
 
 
-function readable_potential(p::LennardJones)
-    ϵ = energy_to(p.C6^2/(4*p.C12), "cm-1")
-    σ = (p.C12/p.C6)^(1/6)
-    return "ϵ=$(ϵ), σ=$(σ)"
+mutable struct PairPotentialTopology
+    potential
+    indices::Vector{PairTopologyIndices}
 end
 
-function safe_readable_potential(p::LennardJones)
-    return "C6=$(p.C6), C12=$(p.C12)"
+
+
+
+function calculate_potential(cluster1::Cluster, cluster2::Cluster,
+                           potential, indics::PairTopologyIndices)
+    error("calculate_potential has not been defined for type $(typeof(potential))")
 end
 
-mutable struct MoleculePairPotential{T<:AbstractPairPotential} <: AbstractClusterPotential
+function clusters_to_potential_variables(ptype, c1::Cluster,
+                                         c2::Cluster, indeces::PairTopologyIndices)
+    error("clusters_to_potential_variables has not been defined for ptype = $(ptype)")
+end
+
+
+function get_potential!(potential, terms)
+    error("get_potential! not implemented for $(typof(potential))")
+end
+
+
+"""
+    MoleculePairPotential{T<:AbstractPairPotential} <: AbstractClusterPotential
+
+Structure to hold potential information between two molecules
+"""
+mutable struct MoleculePairPotential <: AbstractClusterPotential
+    "Molecule 1"
     mol1::MoleculeIdenticalInformation{AtomOnlySymbol}
+    "Molecule 2"
     mol2::MoleculeIdenticalInformation{AtomOnlySymbol}
-    potential::Array{T,2}
-    function MoleculePairPotential{T}(mol1::AbstractMolecule,mol2::AbstractMolecule) where T<:AbstractPairPotential
-        tmp = T()
-        new(mol1,mol2,fill(tmp,(length(mol1),length(mol2))))
-    end
-end
-
-
-function print_potential(io::IO, mpp::MoleculePairPotential{T}, opt=1) where {T}
-    if opt == 1
-        pot = safe_readable_potential.(mpp.potential)
-    else
-        pot = readable_potential.(mpp.potential)
-    end
-    println(io, "Molecule Pair Potential {$(T)}")
-    println(io, "Molecule 1 has $(length(mpp.mol1)) atoms")
-    println(io, "Molecule 2 has $(length(mpp.mol2)) atoms")
-    println(io, "Potential parameters are:")
-    for x in 1:size(pot)[1]
-        for y in 1:size(pot)[2]
-            print(io, pot[x,y], "  ")
-            print(io, mpp.mol1.atoms[x].id, " - ")
-            print(io, mpp.mol2.atoms[y].id, "   indexes")
-            print(io, "($(x), $(y))" , "\n")
+    "Holds potentila (index 1) and indexes for atoms (index 2)"
+    topology::Vector{PairPotentialTopology}
+    function MoleculePairPotential(mol1::AbstractMolecule,mol2::AbstractMolecule, potType)
+        topology = Vector{PairPotentialTopology}()
+        for i1 in mol1.identical.identical
+            for i2 in mol2.identical.identical
+                push!(topology, PairPotentialTopology(potType(), [PairTopologyIndices(i,j) for i in i1 for j in i2 ]) )
+            end
         end
-        #print(io, "\n")
+
+        new(mol1,mol2, topology  )
     end
 end
 
-function Base.show(io::IO, mpp::MoleculePairPotential{T}) where {T}
-    print_potential(io, mpp)
-end
 
-#Update for different potentials
-function r_to_potential(ptype::Type{LennardJones}, r)
-    return [r.^-6,r.^-12]
-end
-
-function e_to_potential(ptype::Type{LennardJones}, e)
-    return e
-end
-
-
-function r_to_potential(ptype::Type{Buckingham}, r)
-    return [r, log.(r)]
-end
-
-
-function e_to_potential(ptype::Type{Buckingham}, e)
-    return log.(e)
-end
-
-function index_transformation(mpp::MoleculePairPotential)
-    l1 = length(mpp.mol1)
-    l2 = length(mpp.mol2)
-    li = l1 * l2
-    lj = length(mpp.mol1.identical.identical) * length(mpp.mol2.identical.identical)
-    vi = [ 0 for x in 1:li ]
-    vj = [Set{Int}() for x in 1:lj ]
-
-    n = 1
-    for s in mpp.mol2.identical.identical
-        for s1 in mpp.mol1.identical.identical
-            s2 = l1 .* s .- l1
-            tmp = [ s1 .+ x for x in s2  ]
-            union!(vj[n], tmp...)
-            n += 1
+function Base.show(io::IO, mpp::MoleculePairPotential; energy_unit="cm^-1")
+    println(io, "Molecule Pair Potential")
+    println(io, "Molecule 1 has $(length(mpp.mol1)) atoms ($(length(mpp.mol1.identical.identical)) unique) ")
+    println(io, "Molecule 2 has $(length(mpp.mol2)) atoms ($(length(mpp.mol2.identical.identical)) unique) \n")
+    println(io, "Potential topology:\n")
+    for x in mpp.topology
+        for y in x.indices
+            for f in y.first
+                for s in y.second
+                    show(io, x.potential, energy_unit=energy_unit)
+                    print(io, " :   ",mpp.mol1.atoms[f].id, " - ")
+                    println(io, mpp.mol2.atoms[s].id, " : ", f," - ",s)
+                end
+            end
         end
     end
-
-    for i in 1:lj
-        for x in vj[i]
-            vi[x] = i
-        end
-    end
-    return Dict("forward" => vj, "backward" => vi  )
 end
 
-#Used to add potential terms for identical atoms
-#id should be form index_transformation "forward"
-#r has potental terms that need to be combined
-function add_identicals(r, id)
-    s = size(r)
-    l = length(id)
-    out = zeros((s[1],l))
-    for i in 1:l
-        for j in id[i]
-            out[:,i] += r[:,j]
-        end
+
+
+function calculate_potential(mpp::MoleculePairPotential, cluster1::Cluster, cluster2::Cluster)
+    out = 0.0
+    for t in mpp.topology
+        out += sum(map(x-> calculate_potential(cluster1, cluster2, t.potential, x), t.indices))
     end
     return out
 end
 
-#This need to be made for every potental
-function get_potential(ptype::Type{LennardJones}, a, b)
-    lh = Int(length(a)/2)
-    C6 =  -1 .* a[1:lh]
-    C12 = a[lh+1:end]
-    return LennardJones.(C6,C12)
+function calculate_potential(mpp::MoleculePairPotential, points)
+    l1 = length(mpp.mol1)
+    l2 = length(mpp.mol2)
+    c1 = map(x->x[1:l1],  points)
+    c2 = map(x->x[l1+1:l1+l2],  points)
+    return map(x->calculate_potential(mpp,x[1:l1],x[l1+1:l1+l2]), points)
 end
+
+function potential_variables(mpp, cluster1, cluster2)
+    out =[]
+    for x in mpp.topology
+    tmp=[]
+        for y in x.indices
+            push!(tmp,vcat(map(z->  clusters_to_potential_variables(typeof(x.potential), z[1], z[2], y), zip(cluster1,cluster2))...) )
+            #push!(tmp,vcat([clusters_to_potential_variables(typeof(x.potential), cluster1[i], cluster2[i], y)
+            #          for i in eachindex(cluster1)]...))
+        end
+    push!(out,+(tmp...))
+    end
+    return out
+end
+
 
 end #module

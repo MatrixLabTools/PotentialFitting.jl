@@ -1,7 +1,14 @@
 module fit
 
-export Fitter, FitData, setweight_e_more!, setweight_e_less!, give_fittable_x,
-       fit_potential!, give_predictable_x, predict_potential
+export FitData,
+       Fitter,
+       fit_potential!,
+       give_fittable_x,
+       give_predictable_x,
+       predict_potential,
+       setweight_e_less!,
+       setweight_e_more!
+
 
 using ScikitLearn
 using ..potentials, PotentialCalculation
@@ -9,33 +16,35 @@ using ..potentials, PotentialCalculation
 
 @sk_import linear_model: LinearRegression
 
+"""
+    FitData
 
+Structure to help potential parameters fitting.
+"""
 mutable struct FitData
-    R
+    "Variables"
+    variables
+    "Energy"
     E
+    "Weights"
     w
-    function FitData(R,E,w)
-        if length(E) != length(w)
-            error("FitData - E and w have different lengths $(length(E)) vs. $(length(w))")
-        end
-        new(R,E,w)
-    end
-    function FitData(data)
-        r = give_radius(data,true)
-        e = give_energy(data,true)
-        w = ones(size(e))
-        new(r,e,w)
+    function FitData(mpp, cluster1, cluster2, energy)
+        #TODO add methid to take account identical atoms
+        new( potential_variables(mpp,cluster1,cluster2) , vcat(energy...) , ones(length(energy)))
     end
 end
+
 
 function give_as_potential(T, data)
     return MoleculePairPotential{T}(data["c1_molecule"],data["c2_molecule"])
 end
 
+
 function setweight_e_more!(data::FitData, w, e, unit="cm-1")
     ec = energy_from(e, unit)
     data.w[data.E .> ec] .= w
 end
+
 
 function setweight_e_less!(data::FitData, w, e, unit="cm-1")
     ec = energy_from(e, unit)
@@ -44,46 +53,35 @@ end
 
 
 
-function give_predictable_x(mpp::MoleculePairPotential, r)
-    t = typeof(mpp).parameters[1]
-    idt = index_transformation(mpp)
-    rtmp = r_to_potential(t,r)
-    rt = map( x ->  add_identicals(x, idt["forward"]), rtmp)
-    return hcat(rt...)
-end
-
-
-"""
-    give_fittable_x(mpp::MoleculePairPotential, fdata::FitData)
-
-Transforms data to form that can be fitted to given potential
-"""
-function give_fittable_x(mpp::MoleculePairPotential, fdata::FitData)
-    return give_predictable_x(mpp, fdata.R)
-end
-
 function fit_potential!(model, mpp::MoleculePairPotential, fdata::FitData)
-    t = typeof(mpp).parameters[1]  #Potential type
-    r = give_fittable_x(mpp, fdata)
+    r = hcat(fdata.variables...)
     fit!(model, r, fdata.E, fdata.w)
-    pot = get_potential(t, model[:coef_], model[:intercept_])
-    idt = index_transformation(mpp)
-    tmp=Array{t}(undef,length(idt["backward"]))
-    for i in eachindex(tmp)
-        tmp[i] = pot[idt["backward"][i]]
+    tl =  [ size(v)[2]  for v in fdata.variables ]
+    ir=[]
+    i = 1
+    for x in tl
+        push!(ir, i:i+x-1)
+        i += x
     end
-    tmp=reshape(tmp, size(mpp.potential))
-    mpp.potential .= tmp
-    #TODO Finish one...
+    for i in eachindex(ir)
+        get_potential!(mpp.topology[i].potential, model[:coef_][ir[i]]...)
+    end
     mpp
 end
 
 
-function predict_potential(model, mpp::MoleculePairPotential, r)
-    rp = give_predictable_x(mpp, r)
-    return predict(model, rp)
+function predict_potential(model, mpp::MoleculePairPotential, points)
+    l1 = length(mpp.mol1)
+    l2 = length(mpp.mol2)
+    c1 = map(x->x[1:l1],  points)
+    c2 = map(x->x[l1+1:l1+l2],  points)
+    return predict_potential(moldel, mpp, c1, c2)
 end
 
+function predict_potential(model, mpp::MoleculePairPotential, cluster1, cluster2)
+    r = hcat(potential_variables(mpp,cluster1,cluster2)...)
+    return predict(model, r)
+end
 
 
 
