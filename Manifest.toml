@@ -298,7 +298,7 @@ version = "0.23.0"
 
 [[PotentialCalculation]]
 deps = ["Distances", "Distributed", "FileIO", "HDF5", "JLD", "JLD2", "LinearAlgebra"]
-git-tree-sha1 = "1282b76a88bf8c7c4796fa51d11079bb2abbb0b9"
+git-tree-sha1 = "fda8a9b522c705bbef3c00f0004c5bdc79a4bea6"
 repo-rev = "master"
 repo-url = "https://github.com/tjjarvinen/PotentialCalculation.jl"
 uuid = "76415700-ec45-11e8-0f65-f1df3c899b21"

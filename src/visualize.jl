@@ -18,7 +18,7 @@ function min_distance(mpp::MoleculePairPotential, points)
 end
 
 
-function plot_potential(mpp::MoleculePairPotential, points; emax=100, unit="cm^-1",
+function plot_potential(points, mpp::MoleculePairPotential; emax=100, unit="cm^-1",
                         leg=false, size=(800,400), font=font(20))
     E = energy_to.(calculate_potential(mpp, points), unit)
     r = min_distance(mpp, points)
@@ -29,15 +29,19 @@ function plot_potential(mpp::MoleculePairPotential, points; emax=100, unit="cm^-
          label = "Fitted")
 end
 
-function plot_compare(mpp::MoleculePairPotential, points, energy; emax=100, unit="cm^-1",
+function plot_compare(points, energy, mpp::MoleculePairPotential...; emax=100, unit="cm^-1",
                       leg=false, size=(800,400), font=font(20))
-    Efit = energy_to.(calculate_potential(mpp, points), unit)
     Ecal = energy_to.(energy, unit)
-    r = min_distance(mpp, points)
+    r = min_distance(mpp[1], points)
     i = Ecal .< emax
-    plot(r[i], Ecal[i], xlabel="Min Distance  [Å]", ylabel="Energy   [$unit]",  label="Calculated",
+    out=plot(r[i], Ecal[i], xlabel="Min Distance  [Å]", ylabel="Energy   [$unit]",  label="Calculated",
          leg=leg, size=size, tickfont=font, seriestype=:scatter)
-    plot!(r[i], Efit[i], label="Fit", tickfont=font)
+
+    for x in mpp
+        Efit = energy_to.(calculate_potential(x, points), unit)
+        plot!(r[i], Efit[i], label="Fit", tickfont=font)
+    end
+    out
 end
 
 
