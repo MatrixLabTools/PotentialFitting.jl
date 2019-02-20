@@ -83,13 +83,12 @@ mutable struct MoleculePairPotential <: AbstractClusterPotential
     topology::Vector{PairPotentialTopology}
     function MoleculePairPotential(mol1::AbstractMolecule,mol2::AbstractMolecule, potType)
         topology = Vector{PairPotentialTopology}()
-        @info "mol1" mol1.identical.identical
         for i1 in mol1.identical.identical
             for i2 in mol2.identical.identical
                 push!(topology, PairPotentialTopology(potType(), [PairTopologyIndices(i,j) for i in i1 for j in i2 ]) )
             end
         end
-        @info "mol1" mol1.identical.identical
+        @debug "mol1" mol1.identical.identical
         new(mol1, mol2, topology  )
     end
     function MoleculePairPotential(mol1::AbstractMolecule,mol2::AbstractMolecule)
