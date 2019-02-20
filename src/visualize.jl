@@ -1,13 +1,14 @@
 module visualize
 
 using ..potentials, ..fit
-using Plots, PotentialCalculation
+using Plots, PotentialCalculation, Bio3DView
 
 
 export min_distance,
        plot_potential,
        plot_compare,
-       visualize_points
+       visualize_points,
+       visualize_point_bio3dview
 
 
 
@@ -54,6 +55,14 @@ function visualize_points(points; stdout=devnull, stderr=devnull, command="vmd")
     end
     run(pipeline(`$(command) $(fname)`, stdout=stdout, stderr=stderr))
     rm(fname)
+end
+
+function visualize_point_bio3dview(point; fname="$(tempdir())/visuzlise-julia.xyz")
+    open(fname,"w+") do f
+        print_xyz(f, point)
+    end
+    style= Style("sphere")
+    viewfile(fname,"xyz",style=style)
 end
 
 end #module

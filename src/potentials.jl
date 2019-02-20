@@ -147,5 +147,13 @@ function potential_variables(mpp, cluster1, cluster2)
     return out
 end
 
+function potential_variables(mpp, points)
+    l1=length(mpp.mol1)
+    l2=length(mpp.mol2)
+    c1 = map(x->x[1:l1], points)
+    c2 = map(x->x[l1+1:l1+l2], points)
+    return potential_variables(mpp,c1,c2)
+end
+
 
 end #module

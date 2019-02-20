@@ -32,6 +32,9 @@ mutable struct FitData
         #TODO add methid to take account identical atoms
         new( potential_variables(mpp,cluster1,cluster2) , vcat(energy...) , ones(length(energy)))
     end
+    function FitData(mpp,points,energy)
+        new( potential_variables(mpp,points) , vcat(energy...) , ones(length(energy)))
+    end
 end
 
 

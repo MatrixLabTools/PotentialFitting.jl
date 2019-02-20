@@ -26,6 +26,7 @@ export AbstractPotential,
        plot_potential,
        plot_compare,
        visualize_points,
+       visualize_point_bio3dview,
 
        LennardJones,
        LJ
