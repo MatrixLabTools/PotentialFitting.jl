@@ -67,7 +67,7 @@ function fit_potential!(model, mpp::MoleculePairPotential, fdata::FitData)
         i += x
     end
     for i in eachindex(ir)
-        get_potential!(mpp.topology[i].potential, model[:coef_][ir[i]]...)
+        get_potential!(mpp.topology[i].potential, model.coef_[ir[i]]...)
     end
     mpp
 end

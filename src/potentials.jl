@@ -45,9 +45,11 @@ struct PairTopologyIndices
 end
 
 
-mutable struct PairPotentialTopology
-    potential
+mutable struct PairPotentialTopology{T}
+    potential::T
     indices::Vector{PairTopologyIndices}
+    PairPotentialTopology{T}(potential::T, ind::PairTopologyIndices) where {T} = new(potential,  [ind])
+    PairPotentialTopology{T}(potential::T, ind::Vector{PairTopologyIndices}) where {T} = new(potential,  ind)
 end
 
 
@@ -85,7 +87,7 @@ mutable struct MoleculePairPotential <: AbstractClusterPotential
         topology = Vector{PairPotentialTopology}()
         for i1 in mol1.identical.identical
             for i2 in mol2.identical.identical
-                push!(topology, PairPotentialTopology(potType(), [PairTopologyIndices(i,j) for i in i1 for j in i2 ]) )
+                push!(topology, PairPotentialTopology{potType}(potType(), [PairTopologyIndices(i,j) for i in i1 for j in i2 ]) )
             end
         end
         @debug "mol1" mol1.identical.identical
@@ -104,13 +106,16 @@ function Base.show(io::IO, mpp::MoleculePairPotential; energy_unit="cm^-1")
     println(io, "Potential topology:\n")
     for x in mpp.topology
         for y in x.indices
+            show(io, x.potential, energy_unit=energy_unit)
+            print(io, " :  ", y.first, " - ", y.second, " : ")
             for f in y.first
-                for s in y.second
-                    show(io, x.potential, energy_unit=energy_unit)
-                    print(io, " :   ",mpp.mol1.atoms[f].id, " - ")
-                    println(io, mpp.mol2.atoms[s].id, " : ", f," - ",s)
-                end
+                print(io, mpp.mol1.atoms[f].id, " ")
             end
+            print(io, "- ")
+            for s in y.second
+                print(io, mpp.mol2.atoms[s].id, " ")
+            end
+            print(io,"\n")
         end
     end
 end

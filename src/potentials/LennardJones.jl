@@ -31,8 +31,8 @@ end
 
 
 function potentials.calculate_potential(cluster1::Cluster, cluster2::Cluster,
-                           potential::LennardJones, indics::PairTopologyIndices)
-    r = distances(cluster1[indics.first[1]], cluster2[indics.second[1]])[1]
+                           potential::LennardJones, indices::PairTopologyIndices)
+    r = distances(cluster1, indices.first[1], cluster2, indices.second[1])
     r6 = r^-6
     r12 = r6^2
     return potential.C12*r12 - potential.C6*r6
@@ -41,7 +41,7 @@ end
 
 function potentials.clusters_to_potential_variables(ptype::Union{Type{LennardJones{T}}, Type{LennardJones}},
                             c1::Cluster, c2::Cluster, indeces::PairTopologyIndices) where{T}
-    r=distances(c1[indeces.first[1]],c2[indeces.second[1]])
+    r=distances(c1, indeces.first[1] , c2, indeces.second[1])
     return [r^-6 r^-12]
 end
 

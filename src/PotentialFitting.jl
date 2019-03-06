@@ -29,7 +29,9 @@ export AbstractPotential,
        visualize_point_bio3dview,
 
        LennardJones,
-       LJ
+       LJ,
+       LennardJonesAngle,
+       LJA
 
 
 
@@ -37,6 +39,7 @@ include("potentials.jl")
 include("fit.jl")
 include("visualize.jl")
 include("potentials/LennardJones.jl")
+include("potentials/LennardJonesAngle.jl")
 
 
 
@@ -44,6 +47,7 @@ using .potentials
 using .fit
 using .visualize
 using .lennardjones
+using .lennardjonesangle
 
 
 end # module

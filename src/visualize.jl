@@ -57,12 +57,10 @@ function visualize_points(points; stdout=devnull, stderr=devnull, command="vmd")
     rm(fname)
 end
 
-function visualize_point_bio3dview(point; fname="$(tempdir())/visuzlise-julia.xyz")
-    open(fname,"w+") do f
-        print_xyz(f, point)
-    end
+function visualize_point_bio3dview(point)
+    s=sprint(print_xyz,point)
     style= Style("sphere")
-    viewfile(fname,"xyz",style=style)
+    viewstring(s,"xyz",style=style)
 end
 
 end #module
