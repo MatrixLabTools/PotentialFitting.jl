@@ -1,8 +1,8 @@
 language: julia
 
 os:
-  - osx
   - linux
+dist: xenial
 
 julia:
   - 1.0
@@ -17,3 +17,8 @@ codecov: true
 matrix:
     allow_failures:
         - julia: nightly
+
+before_install:
+  - sudo apt-get install python3-sklearn
+  #- sudo apt-get install -y python3-pip
+  #- sudo pip3 install -U scikit-learn
