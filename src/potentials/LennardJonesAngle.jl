@@ -6,6 +6,13 @@ using PotentialCalculation
 export LennardJonesAngle,
        LJA
 
+"""
+LennardJonesAngle{T} <: AbstractPairPotential
+
+Lennard Jones potential with angle dependence.
+
+E = (C12 + C12a * cosθ)/R^12 - (C6 + C6a * cosθ)/R^6
+"""
 mutable struct LennardJonesAngle{T} <: AbstractPairPotential
     C6:: T
     C6a:: T
@@ -16,6 +23,12 @@ mutable struct LennardJonesAngle{T} <: AbstractPairPotential
     LennardJonesAngle{T}(c6, c6a, c12, c12a) where{T} = new(c6, c6a, c12, c12a)
 end
 
+
+"""
+LJA
+
+Acronym for [`LennardJonesAngle{Float64}`](@ref)
+"""
 LJA = LennardJonesAngle{Float64}
 
 function Base.show(io::IO, potential::LennardJonesAngle; energy_unit="cm^-1")

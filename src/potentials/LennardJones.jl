@@ -8,7 +8,12 @@ export LennardJones,
        LJ
 
 
+"""
+    LennardJones{T} <: AbstractPairPotential
 
+Holds constants for Lennard-Jones potential
+    E = C12/R^12 - C6/R^6
+"""
 mutable struct LennardJones{T} <: AbstractPairPotential
     C6::T
     C12::T
@@ -16,6 +21,11 @@ mutable struct LennardJones{T} <: AbstractPairPotential
     LennardJones{T}(c6,c12) where{T} = new(c6,c12)
 end
 
+"""
+LJ
+
+Acronym for [`LennardJones{Float64}`](@ref)
+"""
 LJ = LennardJones{Float64}
 
 

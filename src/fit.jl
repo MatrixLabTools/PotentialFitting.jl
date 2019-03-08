@@ -20,6 +20,11 @@ using ..potentials, PotentialCalculation
     FitData
 
 Structure to help potential parameters fitting.
+
+# Fields
+- `variables` : variables
+- `E`         : energy
+- `w`         : weights
 """
 mutable struct FitData
     "Variables"
@@ -38,24 +43,61 @@ mutable struct FitData
 end
 
 
+"""
+give_as_potential(T, data)
+
+Returns MoleculePairPotential{T} from given data that must have `"c1_molecule"`
+and `"c2_molecule"` fields
+"""
 function give_as_potential(T, data)
     return MoleculePairPotential{T}(data["c1_molecule"],data["c2_molecule"])
 end
 
 
-function setweight_e_more!(data::FitData, w, e, unit="cm-1")
+"""
+setweight_e_more!(data::FitData, w, e; unit="cm-1")
+
+Sets weigth when energy is more than given one.
+
+# Arguments
+- `data::FitData`  : data where weigth is adjusted
+- `w`              : new weigth
+- `e`              : energy
+- `unit="cm-1"`    : energy unit
+"""
+function setweight_e_more!(data::FitData, w, e; unit="cm-1")
     ec = energy_from(e, unit)
     data.w[data.E .> ec] .= w
 end
 
 
+"""
+setweight_e_more!(data::FitData, w, e; unit="cm-1")
+
+Sets weigth when energy is more than given one.
+
+# Arguments
+- `data::FitData`  : data where weigth is adjusted
+- `w`              : new weigth
+- `e`              : energy
+- `unit="cm-1"`    : energy unit
+"""
 function setweight_e_less!(data::FitData, w, e, unit="cm-1")
     ec = energy_from(e, unit)
     data.w[data.E .< ec] .= w
 end
 
 
+"""
+fit_potential!(model, mpp::MoleculePairPotential, fdata::FitData)
 
+Fits potential using given model
+
+# Arguments
+- `model`                       : ScikitLearn model
+- `mpp::MoleculePairPotential`  : potential
+- `fdata::FitData`              : data used in fitting
+"""
 function fit_potential!(model, mpp::MoleculePairPotential, fdata::FitData)
     r = hcat(fdata.variables...)
     fit!(model, r, fdata.E, fdata.w)
@@ -73,6 +115,11 @@ function fit_potential!(model, mpp::MoleculePairPotential, fdata::FitData)
 end
 
 
+"""
+predict_potential(model, mpp::MoleculePairPotential, points)
+
+Uses `model` to predict potential on given points
+"""
 function predict_potential(model, mpp::MoleculePairPotential, points)
     l1 = length(mpp.mol1)
     l2 = length(mpp.mol2)
@@ -81,11 +128,14 @@ function predict_potential(model, mpp::MoleculePairPotential, points)
     return predict_potential(moldel, mpp, c1, c2)
 end
 
+"""
+predict_potential(model, mpp::MoleculePairPotential, cluster1, cluster2)
+
+Uses `model` to predict potential on given cluster points
+"""
 function predict_potential(model, mpp::MoleculePairPotential, cluster1, cluster2)
     r = hcat(potential_variables(mpp,cluster1,cluster2)...)
     return predict(model, r)
 end
-
-
 
 end #module

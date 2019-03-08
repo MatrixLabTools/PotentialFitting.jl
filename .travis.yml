@@ -20,5 +20,3 @@ matrix:
 
 before_install:
   - sudo apt-get install python3-sklearn
-  #- sudo apt-get install -y python3-pip
-  #- sudo pip3 install -U scikit-learn
