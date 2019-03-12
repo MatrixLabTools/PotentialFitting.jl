@@ -93,13 +93,13 @@ end
 
 
 """
-clusters_to_potential_variables(ptype, c1::Cluster, c2::Cluster, indeces::PairTopologyIndices)
+clusters_to_potential_variables(potential, c1::Cluster, c2::Cluster, indeces::PairTopologyIndices)
 
 Returns data in a form that can be used to fit potential (linearly).
 That is as an array of terms. Example for Lennard Jones potential this is `[r^-6 r^-12]`.
 **Needs to be implemented for each potential.**
 """
-function clusters_to_potential_variables(ptype, c1::Cluster, c2::Cluster, indeces::PairTopologyIndices)
+function clusters_to_potential_variables(potential, c1::Cluster, c2::Cluster, indeces::PairTopologyIndices)
     error("clusters_to_potential_variables has not been defined for ptype = $(ptype)")
 end
 
@@ -215,7 +215,7 @@ function potential_variables(mpp::MoleculePairPotential, cluster1, cluster2)
     for x in mpp.topology
     tmp=[]
         for y in x.indices
-            push!(tmp,vcat(map(z->  clusters_to_potential_variables(typeof(x.potential), z[1], z[2], y), zip(cluster1,cluster2))...) )
+            push!(tmp,vcat(map(z->  clusters_to_potential_variables(x.potential, z[1], z[2], y), zip(cluster1,cluster2))...) )
         end
     push!(out,+(tmp...))
     end

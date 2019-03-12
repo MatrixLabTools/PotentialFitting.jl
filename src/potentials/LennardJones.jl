@@ -49,7 +49,7 @@ function potentials.calculate_potential(cluster1::Cluster, cluster2::Cluster,
 end
 
 
-function potentials.clusters_to_potential_variables(ptype::Union{Type{LennardJones{T}}, Type{LennardJones}},
+function potentials.clusters_to_potential_variables(potential::LennardJones,
                             c1::Cluster, c2::Cluster, indeces::PairTopologyIndices) where{T}
     r=distances(c1, indeces.first[1] , c2, indeces.second[1])
     return [r^-6 r^-12]

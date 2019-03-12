@@ -50,7 +50,7 @@ function potentials.calculate_potential(cluster1::Cluster, cluster2::Cluster,
     return (potential.C12 + cos(θ)*potential.C12a )*r12 - (potential.C6 + cos(θ)*potential.C6a)*r6
 end
 
-function potentials.clusters_to_potential_variables(ptype::Union{Type{LennardJonesAngle{T}}, Type{LennardJonesAngle}},
+function potentials.clusters_to_potential_variables(potential::LennardJonesAngle,
                             c1::Cluster, c2::Cluster, indices::PairTopologyIndices) where{T}
     r=distances(c1, indices.first[1] ,c2, indices.second[1])
     θ = cluster_angle(c1, indices.first[1], indices.first[2], c2, indices.second[1])
