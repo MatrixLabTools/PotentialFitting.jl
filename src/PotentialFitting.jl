@@ -19,6 +19,7 @@ export AbstractPotential,
        give_fittable_x,
        give_predictable_x,
        predict_potential,
+       rmsd,
        setweight_e_less!,
        setweight_e_more!,
 

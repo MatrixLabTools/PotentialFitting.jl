@@ -24,6 +24,13 @@ mutable struct GeneralJones
     GeneralJones(ur::UnitRange{Integer}) = new(zeros(length(ur)), collect(ur))
 end
 
+
+function Base.show(io::IO, potential::GeneralJones; energy_unit="cm^-1")
+    for (c,p) in zip(potential.constants, potential.powers)
+        print(io, "C($(p))=$(c)  ")
+    end
+end
+
 function potentials.calculate_potential(cluster1::Cluster, cluster2::Cluster,
                            potential::GeneralJones, indices::PairTopologyIndices)
     r = distances(cluster1, indices.first[1], cluster2, indices.second[1])
@@ -43,7 +50,7 @@ end
 
 
 function potentials.get_potential!(potential::GeneralJones, constants...)
-    @assert length(constants) == length(potential.constants)
+    @assert length(constants) == length(potential.constants)  "length of constants with GeneralJones potential do not match"
     potential.constants .= constants
 end
 

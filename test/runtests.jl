@@ -26,7 +26,7 @@ mpp=MoleculePairPotential(m1,m2)
 mpp.topology = topo
 
 fdata = FitData(mpp, data["Points"], data["Energy"])
-
+rmsd(data["Points"],data["Energy"],mpp)
 
 model = LinearRegression()
 
