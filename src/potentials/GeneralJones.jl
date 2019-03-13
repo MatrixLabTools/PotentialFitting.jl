@@ -4,7 +4,7 @@ using ..potentials
 using PotentialCalculation
 
 
-export GeneralJones
+export GeneralJones, @GeneralJones
 
 
 """
@@ -52,6 +52,22 @@ end
 function potentials.get_potential!(potential::GeneralJones, constants...)
     @assert length(constants) == length(potential.constants)  "length of constants with GeneralJones potential do not match"
     potential.constants .= constants
+end
+
+"""
+macro GeneralJones(indices, i...)
+
+Used to simplify potential generation. Genrates [`GeneralJones`](@ref) potential
+and topology for it.
+
+# Examples
+```julia-repl
+julia> @GeneralJones (1,1) -6 -12
+PairPotentialTopology{GeneralJones}(C(-6)=0.0  C(-12)=0.0  , PairTopologyIndices[PairTopologyIndices([1], [1])])
+```
+"""
+macro GeneralJones(indices, i...)
+    return :(PairPotentialTopology{GeneralJones}(GeneralJones($(i)...),PairTopologyIndices($(indices)...)))
 end
 
 end #module

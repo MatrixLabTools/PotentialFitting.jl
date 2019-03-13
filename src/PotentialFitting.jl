@@ -26,6 +26,8 @@ export AbstractPotential,
        min_distance,
        plot_potential,
        plot_compare,
+       scan_compare,
+       scan_vizualize,
        visualize_points,
        visualize_point_bio3dview,
 
@@ -33,7 +35,7 @@ export AbstractPotential,
        LJ,
        LennardJonesAngle,
        LJA,
-       GeneralJones
+       GeneralJones, @GeneralJones
 
 
 

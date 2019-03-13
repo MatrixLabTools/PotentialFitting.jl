@@ -1,12 +1,14 @@
 module visualize
 
 using ..potentials, ..fit
-using Plots, PotentialCalculation, Bio3DView
+using Plots, PotentialCalculation, Bio3DView, Interact
 
 
 export min_distance,
        plot_potential,
        plot_compare,
+       scan_compare,
+       scan_vizualize,
        visualize_points,
        visualize_point_bio3dview
 
@@ -111,6 +113,59 @@ function visualize_point_bio3dview(point::Cluster)
     s=sprint(print_xyz,point)
     style= Style("sphere")
     viewstring(s,"xyz",style=style)
+end
+
+
+"""
+scan_compare(points,energy, mppe...; emax=100, unit="cm^-1",
+                      leg=false, fsize=(800,400))
+
+Use [`Interact`](@ref) [`@manipulate`](@ref) to view several potential at same time
+while also being able to easily view different positions.
+
+# Arguments
+- `points`  : array of points, first dimension is displayd while second can be chosen
+- `energy`  : array of reference energy, first dimension is displayd while second can be chosen
+- `mppe...` : [`MoleculePairPotential`](@ref) which are plotted
+- `emax=100`  : maximum energy in plot - cut all values with energy greater
+- `unit="cm^-1"`  : energy unit
+- `leg=false`     : draw legend
+- `size=(800,400)`   : size of picture
+"""
+function scan_compare(points,energy, mppe...; emax=100, unit="cm^-1",
+                      leg=false, fsize=(800,400))
+    @assert size(points) == size(energy) "points and energy need to have same size"
+    e = energy_from(emax,unit)
+    s=size(points)
+    units = Observable(["cm^-1", "kcal/mol", "kJ/mol", "eV", "K", "hartree"])
+    wdg = dropdown(units, label="Energy unit")
+    display(wdg)
+
+    plt = @manipulate for col in slider(1:s[2], label="Collumn")
+        plot_compare(points[:,col],energy[:,col], mppe..., emax=energy_to(e,wdg[]), unit=wdg[], leg=leg, size=fsize)
+    end
+    plt
+end
+
+"""
+scan_vizualize(points; i=4)
+
+Visualize geometry of points using [`Interact`](@ref) and [`@manipulate`](@ref)
+
+# Arguments
+- `points`  : array of points, first dimension is displayd while second can be chosen
+- `i=4`     : row index at with visialization is done
+"""
+function scan_vizualize(points; i=4)
+    s = size(points)
+    plt = @manipulate for col in slider(1:s[2], label="Collumn")
+        if length(points[:,col]) >= i
+            visualize_point_bio3dview(points[i,col])
+        else
+            visualize_point_bio3dview(points[1,col])
+        end
+    end
+    plt
 end
 
 end #module
