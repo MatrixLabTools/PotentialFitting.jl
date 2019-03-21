@@ -140,6 +140,7 @@ function predict_potential(model, mpp::MoleculePairPotential, cluster1, cluster2
     return predict(model, r)
 end
 
+
 """
 rmsd(points, energy, mpp::MoleculePairPotential; emax=0, unit="cm^-1")
 
@@ -151,8 +152,6 @@ Calculates root mean square error for potential `mpp`.
 - `mpp::MoleculePairPotential`  : potential
 - `emax=0`                      : cut points where energy is larger than this
 - `unit="cm^-1"`                : unit for `emax`
-
-
 """
 function rmsd(points, energy, mpp::MoleculePairPotential; emax=0, unit="cm^-1")
     @assert size(points) == size(energy) "points and energy need to have same size"

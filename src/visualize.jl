@@ -83,14 +83,11 @@ function plot_compare(points, energy, mpp::MoleculePairPotential...; emax=100, u
     out
 end
 
+
 """
 visualize_points(points; stdout=devnull, stderr=devnull, command="vmd")
 
 Visualize using external program.
-
-# Arguments
-- `points`  : array of [`Cluster`](@ref) where potential is plotted
-
 """
 function visualize_points(points; stdout=devnull, stderr=devnull, command="vmd")
     fname = tempname()*".xyz"
@@ -106,7 +103,7 @@ end
 """
 visualize_point_bio3dview(point::Cluster)
 
-Visualize point using bio3dview.
+Visualize point using [Bio3DView](https://github.com/jgreener64/Bio3DView.jl).
 Can be used wit IJulia and on html
 """
 function visualize_point_bio3dview(point::Cluster)
@@ -120,8 +117,10 @@ end
 scan_compare(points,energy, mppe...; emax=100, unit="cm^-1",
                       leg=false, fsize=(800,400))
 
-Use [`Interact`](@ref) [`@manipulate`](@ref) to view several potential at same time
-while also being able to easily view different positions.
+Use [`Interact`](https://juliagizmos.github.io/Interact.jl/stable/) to view
+potentials ineractively on different points.
+
+Visualization is done on collumn vise.
 
 # Arguments
 - `points`  : array of points, first dimension is displayd while second can be chosen
@@ -147,10 +146,12 @@ function scan_compare(points,energy, mppe...; emax=100, unit="cm^-1",
     plt
 end
 
+
 """
 scan_vizualize(points; i=4)
 
-Visualize geometry of points using [`Interact`](@ref) and [`@manipulate`](@ref)
+Visualize geometry of points interactively using [`Interact`](https://juliagizmos.github.io/Interact.jl/stable/)
+
 
 # Arguments
 - `points`  : array of points, first dimension is displayd while second can be chosen

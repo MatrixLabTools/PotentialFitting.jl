@@ -54,14 +54,15 @@ function potentials.get_potential!(potential::GeneralJones, constants...)
     potential.constants .= constants
 end
 
+
 """
-macro GeneralJones(indices, i...)
+    @GeneralJones(indices, i...)
 
 Used to simplify potential generation. Genrates [`GeneralJones`](@ref) potential
 and topology for it.
 
 # Examples
-```julia-repl
+```jldoctest; setup = :(using PotentialFitting.generaljones, PotentialFitting.potentials )
 julia> @GeneralJones (1,1) -6 -12
 PairPotentialTopology{GeneralJones}(C(-6)=0.0  C(-12)=0.0  , PairTopologyIndices[PairTopologyIndices([1], [1])])
 ```
