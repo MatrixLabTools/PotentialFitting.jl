@@ -1,6 +1,5 @@
-using Pkg
-Pkg.activate("..")
-using Documenter, PotentialFitting
+using Documenter
+using PotentialFitting
 
 makedocs(sitename="PotentialFitting.jl",
          pages=["Home" => "index.md"]
