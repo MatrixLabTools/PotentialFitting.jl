@@ -35,7 +35,8 @@ export AbstractPotential,
        LJ,
        LennardJonesAngle,
        LJA,
-       GeneralJones, @GeneralJones
+       GeneralJones, @GeneralJones,
+       GeneralAngle
 
 
 
@@ -45,6 +46,7 @@ include("visualize.jl")
 include("potentials/LennardJones.jl")
 include("potentials/LennardJonesAngle.jl")
 include("potentials/GeneralJones.jl")
+include("potentials/GeneralAngle.jl")
 
 
 
@@ -54,6 +56,8 @@ using .visualize
 using .lennardjones
 using .lennardjonesangle
 using .generaljones
+using .generalangle
+
 
 
 end # module
