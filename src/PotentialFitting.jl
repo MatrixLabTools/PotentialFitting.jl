@@ -35,7 +35,7 @@ export AbstractPotential,
        LJ,
        LennardJonesAngle,
        LJA,
-       GeneralJones, @GeneralJones,
+       GeneralPowers, @GeneralPowers,
        GeneralAngle
 
 
@@ -45,7 +45,7 @@ include("fit.jl")
 include("visualize.jl")
 include("potentials/LennardJones.jl")
 include("potentials/LennardJonesAngle.jl")
-include("potentials/GeneralJones.jl")
+include("potentials/GeneralPowers.jl")
 include("potentials/GeneralAngle.jl")
 
 
@@ -55,7 +55,7 @@ using .fit
 using .visualize
 using .lennardjones
 using .lennardjonesangle
-using .generaljones
+using .generalpowers
 using .generalangle
 
 

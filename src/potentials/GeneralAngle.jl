@@ -40,7 +40,8 @@ end
 
 function potentials.calculate_potential(cluster1::Cluster, cluster2::Cluster,
                            potential::GeneralAngle, indices::PairTopologyIndices)
-    r = distances(cluster1, indices.first[1], cluster2, indices.second[1])
+    # Convert from Å to bohr
+    r = distances(cluster1, indices.first[1], cluster2, indices.second[1]) ./ 0.52917721090
     if length(indices.first) > length(indices.second)
         θ = cluster_angle(cluster1, indices.first[2], indices.first[1], cluster2, indices.second[1])
     else
@@ -58,7 +59,8 @@ end
 
 function potentials.clusters_to_potential_variables(potential::GeneralAngle,
                             c1::Cluster, c2::Cluster, indices::PairTopologyIndices)
-    r = distances(c1, indices.first[1], c2, indices.second[1])
+    # Convert from Å to bohr
+    r = distances(c1, indices.first[1], c2, indices.second[1]) ./ 0.52917721090
     if length(indices.first) > length(indices.second)
         θ = cluster_angle(c1, indices.first[2], indices.first[1], c2, indices.second[1])
     else

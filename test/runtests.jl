@@ -16,7 +16,7 @@ m2=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster2"].atoms)
 topo=[]
 push!(topo, PairPotentialTopology{LJ}([PairTopologyIndices(1,1)]))
 push!(topo, PairPotentialTopology{LJ}(LJ(), [PairTopologyIndices(5,1)]))
-push!(topo, PairPotentialTopology{GeneralJones}([PairTopologyIndices(4,1)]))
+push!(topo, PairPotentialTopology{GeneralPowers}([PairTopologyIndices(4,1)]))
 push!(topo, PairPotentialTopology{LJA}([PairTopologyIndices((2,4),1)]))
 push!(topo, PairPotentialTopology{GeneralAngle}(GeneralAngle([-6, -12], [0, 1]), PairTopologyIndices((3,1),1)))
 
