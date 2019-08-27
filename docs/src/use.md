@@ -4,8 +4,8 @@ To calculate potential energy surface refer to [PotentialCalculation](https://gi
 it for fitting by using
 
 ```@example 1
-import PotentialCalculation
-import PotentialFitting
+using PotentialCalculation
+using PotentialFitting
 
 # There is a example potential in test/data directory
 fname=normpath(joinpath(dirname(pathof(PotentialFitting)),"../test", "data", "test.jld"))
@@ -19,7 +19,6 @@ Next part in defining topology for the potential. This is started by creating tw
 molecules. The information is in the loaded file.
 
 ```@example 1
-
 m1=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster1"].atoms)
 m2=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster2"].atoms)
 
@@ -30,7 +29,6 @@ show(m2) # hide
 If neede atoms can be flagged as identical
 
 ```@example 1
-
 # Atoms 2 and 3 are identical
 makeidentical!(m1, (2,3))
 
@@ -40,7 +38,6 @@ makeidentical!(m1, (2,3))
 Next we need to define topology for the potential.
 
 ```@example 1
-
 mpp = MoleculePairPotential(m1,m2, LJ())
 
 ```
@@ -50,7 +47,6 @@ mpp = MoleculePairPotential(m1,m2, LJ())
 Alternatively potential can be tuned complitely by adding potentials one by one.
 
 ```@example 1
-
 # Array where topology is saved
 topo=[]
 
@@ -65,7 +61,6 @@ If needed we can specify which atoms should be treated as identical, by adding
 information for it  in the topology.
 
 ```@example 1
-
 # Atoms 2 and 3 of molecule 1 have same potential to to atom 1 of molecule 2
 push!(topo,
       PairPotentialTopology{LJ}([PairTopologyIndices(2,1), PairTopologyIndices(3,1)])
@@ -76,7 +71,6 @@ push!(topo,
 If default form of potential is not enough it can be tuned, by giving it as an input
 
 ```@example 1
-
 push!(topo,
       PairPotentialTopology{GeneralPowers}(GeneralPowers(-6,-12), PairTopologyIndices(4,1))
      )
@@ -87,3 +81,63 @@ push!(topo,
 
  Here we used general polynomial potential ```GeneralPowers``` to make customized
  polynomic potential.
+
+We can now create potential.
+
+```@example 1
+mpp1=MoleculePairPotential(m1,m2)
+mpp1.topology = topo
+
+show(mpp1)
+```
+
+To do fitting itself we need to prepare fit data.
+
+```@example 1
+fdata = FitData(mpp, data["Points"], data["Energy"])
+```
+
+At this point we can add weights to data.
+
+```@example 1
+# If energy is more than 1500 cm⁻¹ weigth is zero
+setweight_e_more!(fdata, 0, 1500)
+
+# If energy is less than 80 cm⁻¹ weigth is 4
+setweight_e_less!(fdata,4,80)
+```
+
+We also need to create fitting model. At the current moment only linear models
+can be used. Here we take normal linear regression, but any linear model suported
+by ScikitLearn can be used.
+
+```@example 1
+using ScikitLearn
+@sk_import linear_model: LinearRegression
+
+model = LinearRegression()
+```
+
+To do fitting itself.
+
+```@example
+fit_potential!(model, mpp, fdata)
+```
+
+You can inspect the fit by calculating RMSD.
+
+```@example 1
+rmsd(data["Points"], data["Energy"], mpp)
+```
+
+Alternatively you can visualize the fit with various methods.
+
+```@example 1
+plot_compare(data["Points"][:,1], data["Energy"][:,1], mpp)
+```
+
+For more visualizations take a look for
+- `plot_compare`
+- `scan_compare`
+- `scan_vizualize`
+- `visualize_points`

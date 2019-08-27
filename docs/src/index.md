@@ -29,6 +29,6 @@ Order   = [:function, :type, :macro]
 
 ### Potentials
 ```@autodocs
-Modules = [PotentialFitting.potentials, PotentialFitting.generaljones]
+Modules = [PotentialFitting.potentials, PotentialFitting.lennardjones, PotentialFitting.generalpowers]
 Order   = [:function, :type, :macro]
 ```

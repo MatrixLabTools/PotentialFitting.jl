@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/tjjarvinen/PotentialFitting.jl.svg?branch=master)](https://travis-ci.org/tjjarvinen/PotentialFitting.jl) [![codecov](https://codecov.io/gh/tjjarvinen/PotentialFitting.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/tjjarvinen/PotentialFitting.jl)
 
-[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://tjjarvinen.github.io/PotentialFitting.jl/dev/)
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://tjjarvinen.github.io/PotentialFitting.jl/latest/)
 
 Package is in working state and should be usable for most of the intended use
 cases.

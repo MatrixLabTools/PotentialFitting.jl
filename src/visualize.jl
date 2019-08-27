@@ -16,7 +16,8 @@ export min_distance,
 """
 min_distance(mpp::MoleculePairPotential, points)
 
-Gives minimum distance of molecules in `mpp` on given points
+Gives minimum distance of molecules in `mpp` on given points.
+Used to help plotting.
 """
 function min_distance(mpp::MoleculePairPotential, points)
     l1 = length(mpp.mol1)
