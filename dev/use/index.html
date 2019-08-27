@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Usage · PotentialFitting.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>PotentialFitting.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="../search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../">Home</a></li><li class="current"><a class="toctext" href>Usage</a><ul class="internal"></ul></li></ul></nav><article id="docs"><header><nav><ul><li><a href>Usage</a></li></ul><a class="edit-page" href="https://github.com/tjjarvinen/PotentialFitting.jl/blob/master/docs/src/use.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Usage</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Usage-1" href="#Usage-1">Usage</a></h1><p>To calculate potential energy surface refer to <a href="https://github.com/tjjarvinen/PotentialCalculation.jl">PotentialCalculation</a>.Ones you have potential energy calculated you can open it for fitting by using</p><pre><code class="language-">import PotentialCalculation
+import PotentialFitting
+
+# There is a example potential in test/data directory
+fname=normpath(joinpath(dirname(pathof(PotentialFitting)),&quot;../test&quot;, &quot;data&quot;, &quot;test.jld&quot;))
+
+# Load potential
+data=load_data_file(fname)</code></pre><p>Next part in defining topology for the potential. This is started by creating two molecules. The information is in the loaded file.</p><pre><code class="language-">
+m1=MoleculeIdenticalInformation{AtomOnlySymbol}(data[&quot;cluster1&quot;].atoms)
+m2=MoleculeIdenticalInformation{AtomOnlySymbol}(data[&quot;cluster2&quot;].atoms)
+
+show(m1) # hide
+show(m2) # hide</code></pre><p>If neede atoms can be flagged as identical</p><pre><code class="language-">
+# Atoms 2 and 3 are identical
+makeidentical!(m1, (2,3))
+</code></pre><p>Next we need to define topology for the potential.</p><pre><code class="language-">
+mpp = MoleculePairPotential(m1,m2, LJ())
+</code></pre><p>Alternatively potential can be tuned complitely by adding potentials one by one.</p><pre><code class="language-">
+# Array where topology is saved
+topo=[]
+
+#We can push potential to to this array one at the time
+push!(topo,
+      PairPotentialTopology{LJ}(PairTopologyIndices(1,1))
+     )
+</code></pre><p>If needed we can specify which atoms should be treated as identical, by adding information for it  in the topology.</p><pre><code class="language-">
+# Atoms 2 and 3 of molecule 1 have same potential to to atom 1 of molecule 2
+push!(topo,
+      PairPotentialTopology{LJ}([PairTopologyIndices(2,1), PairTopologyIndices(3,1)])
+     )
+</code></pre><p>If default form of potential is not enough it can be tuned, by giving it as an input</p><p>```@example 1</p><p>push!(topo,       PairPotentialTopology{GeneralPowers}(GeneralPowers(-6,-12), PairTopologyIndices(4,1))      ) push!(topo,      PairPotentialTopology{GeneralPowers}(GeneralPowers(-6,-8, -10, -12), PairTopologyIndices(4,1))     )  ```</p><p>Here we used general polynomial potential <code>GeneralPowers</code> to make customized  polynomic potential.</p><footer><hr/><a class="previous" href="../"><span class="direction">Previous</span><span class="title">Home</span></a></footer></article></body></html>

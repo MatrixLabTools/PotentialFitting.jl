@@ -176,4 +176,20 @@ var documenterSearchIndex = {"docs": [
     "text": "Modules = [PotentialFitting.potentials, PotentialFitting.generaljones]\nOrder   = [:function, :type, :macro]"
 },
 
+{
+    "location": "use/#",
+    "page": "Usage",
+    "title": "Usage",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "use/#Usage-1",
+    "page": "Usage",
+    "title": "Usage",
+    "category": "section",
+    "text": "To calculate potential energy surface refer to PotentialCalculation.Ones you have potential energy calculated you can open it for fitting by usingimport PotentialCalculation\nimport PotentialFitting\n\n# There is a example potential in test/data directory\nfname=normpath(joinpath(dirname(pathof(PotentialFitting)),\"../test\", \"data\", \"test.jld\"))\n\n# Load potential\ndata=load_data_file(fname)Next part in defining topology for the potential. This is started by creating two molecules. The information is in the loaded file.\nm1=MoleculeIdenticalInformation{AtomOnlySymbol}(data[\"cluster1\"].atoms)\nm2=MoleculeIdenticalInformation{AtomOnlySymbol}(data[\"cluster2\"].atoms)\n\nshow(m1) # hide\nshow(m2) # hideIf neede atoms can be flagged as identical\n# Atoms 2 and 3 are identical\nmakeidentical!(m1, (2,3))\nNext we need to define topology for the potential.\nmpp = MoleculePairPotential(m1,m2, LJ())\nAlternatively potential can be tuned complitely by adding potentials one by one.\n# Array where topology is saved\ntopo=[]\n\n#We can push potential to to this array one at the time\npush!(topo,\n      PairPotentialTopology{LJ}(PairTopologyIndices(1,1))\n     )\nIf needed we can specify which atoms should be treated as identical, by adding information for it  in the topology.\n# Atoms 2 and 3 of molecule 1 have same potential to to atom 1 of molecule 2\npush!(topo,\n      PairPotentialTopology{LJ}([PairTopologyIndices(2,1), PairTopologyIndices(3,1)])\n     )\nIf default form of potential is not enough it can be tuned, by giving it as an input```@example 1push!(topo,       PairPotentialTopology{GeneralPowers}(GeneralPowers(-6,-12), PairTopologyIndices(4,1))      ) push!(topo,      PairPotentialTopology{GeneralPowers}(GeneralPowers(-6,-8, -10, -12), PairTopologyIndices(4,1))     )  ```Here we used general polynomial potential GeneralPowers to make customized  polynomic potential."
+},
+
 ]}
