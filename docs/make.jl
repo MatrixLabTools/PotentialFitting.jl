@@ -1,5 +1,5 @@
 using Documenter
-using PotentialFitting
+using PotentialFitting, PotentialCalculation
 
 makedocs(sitename="PotentialFitting.jl",
          pages=["Home" => "index.md",
@@ -7,6 +7,6 @@ makedocs(sitename="PotentialFitting.jl",
 
 )
 
-deploydocs(
-    repo = "github.com/tjjarvinen/PotentialFitting.jl.git",
-)
+#deploydocs(
+#    repo = "github.com/tjjarvinen/PotentialFitting.jl.git",
+#)
