@@ -7,6 +7,6 @@ makedocs(sitename="PotentialFitting.jl",
 
 )
 
-#deploydocs(
-#    repo = "github.com/tjjarvinen/PotentialFitting.jl.git",
-#)
+deploydocs(
+    repo = "github.com/tjjarvinen/PotentialFitting.jl.git",
+)

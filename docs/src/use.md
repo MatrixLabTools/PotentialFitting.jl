@@ -121,6 +121,7 @@ can be used. Here we take normal linear regression, but any linear model suporte
 by ScikitLearn can be used.
 
 ```@example 1
+import Pkg; Pkg.add("ScikitLearn") # hide
 using ScikitLearn
 @sk_import linear_model: LinearRegression
 
@@ -140,7 +141,7 @@ fit_potential!(model, mpp, fdata)
 You can inspect the fit by calculating RMSD.
 
 ```@example 1
-# Unit is in hartrees
+# Unit is hartrees
 rmsd(data["Points"], data["Energy"], mpp)
 ```
 
