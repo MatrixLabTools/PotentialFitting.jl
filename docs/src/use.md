@@ -27,9 +27,27 @@ show(m1) # hide
 show(m2) # hide
 ```
 
+If neede atoms can be flagged as identical
+
+```@example 1
+
+# Atoms 2 and 3 are identical
+makeidentical!(m1, (2,3))
+
+```
 
 
 Next we need to define topology for the potential.
+
+```@example 1
+
+mpp = MoleculePairPotential(m1,m2, LJ())
+
+```
+
+
+
+Alternatively potential can be tuned complitely by adding potentials one by one.
 
 ```@example 1
 
@@ -42,8 +60,6 @@ push!(topo,
      )
 
 ```
-
-Here we used Lennard Jones potential with symbol ```JL```
 
 If needed we can specify which atoms should be treated as identical, by adding
 information for it  in the topology.

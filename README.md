@@ -4,7 +4,7 @@
 
 [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://tjjarvinen.github.io/PotentialFitting.jl/dev/)
 
-Package is not in working state and should be usable for most of the intended use
+Package is in working state and should be usable for most of the intended use
 cases.
 
 The aim here is to make a tool to fit (and calculate) non-bonding potential between 2 molecules.
