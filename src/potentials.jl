@@ -130,13 +130,14 @@ mutable struct MoleculePairPotential <: AbstractClusterPotential
     mol1#::MoleculeIdenticalInformation{AtomOnlySymbol}
     "Molecule 2"
     mol2#::MoleculeIdenticalInformation{AtomOnlySymbol}
-    "Holds potentila (index 1) and indexes for atoms (index 2)"
+    "Holds potential (index 1) and indexes for atoms (index 2)"
     topology::Vector{PairPotentialTopology}
-    function MoleculePairPotential(mol1::AbstractMolecule,mol2::AbstractMolecule, potType)
+    function MoleculePairPotential(mol1::AbstractMolecule,mol2::AbstractMolecule, potential::AbstractPotential)
         topology = Vector{PairPotentialTopology}()
+        tt = typeof(potential)
         for i1 in mol1.identical.identical
             for i2 in mol2.identical.identical
-                push!(topology, PairPotentialTopology{potType}([PairTopologyIndices(i,j) for i in i1 for j in i2 ]) )
+                push!(topology, PairPotentialTopology{tt}(deepcopy(potential),[PairTopologyIndices(i,j) for i in i1 for j in i2 ]) )
             end
         end
         @debug "mol1" mol1.identical.identical

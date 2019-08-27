@@ -20,7 +20,7 @@ push!(topo, PairPotentialTopology{GeneralPowers}([PairTopologyIndices(4,1)]))
 push!(topo, PairPotentialTopology{LJA}([PairTopologyIndices((2,4),1)]))
 push!(topo, PairPotentialTopology{GeneralAngle}(GeneralAngle([-6, -12], [0, 1]), PairTopologyIndices((3,1),1)))
 
-mpp1=MoleculePairPotential(m1,m2, LJ)
+mpp1=MoleculePairPotential(m1,m2, LJ())
 mpp=MoleculePairPotential(m1,m2)
 
 mpp.topology = topo

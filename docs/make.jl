@@ -2,7 +2,8 @@ using Documenter
 using PotentialFitting
 
 makedocs(sitename="PotentialFitting.jl",
-         pages=["Home" => "index.md"]
+         pages=["Home" => "index.md",
+                "Usage" => "use.md"]
 
 )
 

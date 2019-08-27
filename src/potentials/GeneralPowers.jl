@@ -16,7 +16,7 @@ General potential with customizable powers.
 - `constants::Vector{Float64}` : potential constants
 - `powers::Vector{Int}`        : powers for radius
 """
-mutable struct GeneralPowers
+mutable struct GeneralPowers <: AbstractPairPotential
     constants::Vector{Float64}
     powers::Vector{Int}
     GeneralPowers() = new([0.0, 0.0], [-6, -12])
