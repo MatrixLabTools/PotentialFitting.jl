@@ -121,11 +121,11 @@ can be used. Here we take normal linear regression, but any linear model suporte
 by ScikitLearn can be used.
 
 ```@example 1
-import Pkg; Pkg.add("ScikitLearn") # hide
 using ScikitLearn
 @sk_import linear_model: LinearRegression
 
 model = LinearRegression()
+nothing  # hide
 ```
 
 
@@ -141,7 +141,7 @@ fit_potential!(model, mpp, fdata)
 You can inspect the fit by calculating RMSD.
 
 ```@example 1
-# Unit is hartrees
+# Unit is hartree
 rmsd(data["Points"], data["Energy"], mpp)
 ```
 
@@ -150,7 +150,8 @@ rmsd(data["Points"], data["Energy"], mpp)
 Alternatively you can visualize the fit with various methods.
 
 ```@example 1
-plot_compare(data["Points"][:,1], data["Energy"][:,1], mpp, leg=true)
+plot_compare(data["Points"][:,1], data["Energy"][:,1], mpp,
+             leg=true, size=(600,300))
 ```
 
 

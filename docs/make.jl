@@ -1,5 +1,6 @@
 using Documenter
 using PotentialFitting, PotentialCalculation
+import Pkg; Pkg.add("ScikitLearn")
 
 makedocs(sitename="PotentialFitting.jl",
          pages=["Home" => "index.md",

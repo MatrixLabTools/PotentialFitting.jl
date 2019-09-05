@@ -49,7 +49,7 @@ function plot_potential(points, mpp::MoleculePairPotential; emax=100, unit="cm^-
     plot(r[i], E[i],
          xlabel = "Min distance   [Å]",
          ylabel = "Energy   ["*unit*"]",
-         label = "Fitted")
+         label = "Fitted", size=size, tickfont=font)
 end
 
 
