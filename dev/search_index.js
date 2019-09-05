@@ -357,7 +357,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Usage",
     "title": "Fitting Potential",
     "category": "section",
-    "text": "We also need to create fitting model. At the current moment only linear models can be used. Here we take normal linear regression, but any linear model suported by ScikitLearn can be used.import Pkg; Pkg.add(\"ScikitLearn\") # hide\nusing ScikitLearn\n@sk_import linear_model: LinearRegression\n\nmodel = LinearRegression()To do fitting itself.fit_potential!(model, mpp, fdata)"
+    "text": "We also need to create fitting model. At the current moment only linear models can be used. Here we take normal linear regression, but any linear model suported by ScikitLearn can be used.using ScikitLearn\n@sk_import linear_model: LinearRegression\n\nmodel = LinearRegression()\nnothing  # hideTo do fitting itself.fit_potential!(model, mpp, fdata)"
 },
 
 {
@@ -365,7 +365,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Usage",
     "title": "Inspecting Fitted Potential",
     "category": "section",
-    "text": "You can inspect the fit by calculating RMSD.# Unit is hartrees\nrmsd(data[\"Points\"], data[\"Energy\"], mpp)Alternatively you can visualize the fit with various methods.plot_compare(data[\"Points\"][:,1], data[\"Energy\"][:,1], mpp, leg=true)For more visualizations take a look forplot_compare\nscan_compare\nscan_vizualize\nvisualize_points"
+    "text": "You can inspect the fit by calculating RMSD.# Unit is hartree\nrmsd(data[\"Points\"], data[\"Energy\"], mpp)Alternatively you can visualize the fit with various methods.plot_compare(data[\"Points\"][:,1], data[\"Energy\"][:,1], mpp,\n             leg=true, size=(600,300))For more visualizations take a look forplot_compare\nscan_compare\nscan_vizualize\nvisualize_points"
 },
 
 ]}
