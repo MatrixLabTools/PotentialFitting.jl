@@ -39,7 +39,7 @@ makeidentical!(m1, (2,3))
 Next we need to define topology for the potential.
 
 ```@example 1
-mpp = MoleculePairPotential(m1,m2, LJ())
+mpp = MoleculePairPotential(m1,m2, LennardJones())
 ```
 
 ### Finetuning Potential
@@ -52,7 +52,7 @@ topo=[]
 
 #We can push potential to to this array one at the time
 push!(topo,
-      PairPotentialTopology{LJ}(PairTopologyIndices(1,1))
+      PairPotentialTopology{LennardJones}(PairTopologyIndices(1,1))
      )
 nothing # hide
 ```
@@ -64,7 +64,7 @@ information for it  in the topology.
 ```@example 1
 # Atoms 2 and 3 of molecule 1 have same potential to to atom 1 of molecule 2
 push!(topo,
-      PairPotentialTopology{LJ}([PairTopologyIndices(2,1), PairTopologyIndices(3,1)])
+      PairPotentialTopology{LennardJones}([PairTopologyIndices(2,1), PairTopologyIndices(3,1)])
      )
 nothing # hide
 ```

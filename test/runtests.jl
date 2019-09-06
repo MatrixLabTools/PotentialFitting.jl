@@ -14,13 +14,13 @@ m1=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster1"].atoms)
 m2=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster2"].atoms)
 
 topo=[]
-push!(topo, PairPotentialTopology{LJ}([PairTopologyIndices(1,1)]))
-push!(topo, PairPotentialTopology{LJ}(LJ(), [PairTopologyIndices(5,1)]))
+push!(topo, PairPotentialTopology{LennardJones}([PairTopologyIndices(1,1)]))
+push!(topo, PairPotentialTopology{LennardJones}(LennardJones(), [PairTopologyIndices(5,1)]))
 push!(topo, PairPotentialTopology{GeneralPowers}([PairTopologyIndices(4,1)]))
-push!(topo, PairPotentialTopology{LJA}([PairTopologyIndices((2,4),1)]))
+push!(topo, PairPotentialTopology{LennardJones}([PairTopologyIndices(2,1)]))
 push!(topo, PairPotentialTopology{GeneralAngle}(GeneralAngle([-6, -12], [0, 1]), PairTopologyIndices((3,1),1)))
 
-mpp1=MoleculePairPotential(m1,m2, LJ())
+mpp1=MoleculePairPotential(m1,m2, LennardJones())
 mpp=MoleculePairPotential(m1,m2)
 
 mpp.topology = topo
