@@ -32,11 +32,17 @@ export AbstractPotential,
        visualize_point_bio3dview,
 
        LennardJones,
-       LJ,
-       LennardJonesAngle,
-       LJA,
        GeneralPowers, @GeneralPowers,
-       GeneralAngle
+       GeneralAngle,
+
+       AbstractTopology,
+       AbstractPairTopology,
+       AbstractClusterTopology,
+       AbstractPotentialTopology,
+       PairTopology,
+       MultiPairTopology,
+       ClusterToplogy,
+       PotentialTopology
 
 
 
@@ -44,9 +50,10 @@ include("potentials.jl")
 include("fit.jl")
 include("visualize.jl")
 include("potentials/LennardJones.jl")
-include("potentials/LennardJonesAngle.jl")
 include("potentials/GeneralPowers.jl")
 include("potentials/GeneralAngle.jl")
+include("topology.jl")
+
 
 
 
@@ -54,9 +61,10 @@ using .potentials
 using .fit
 using .visualize
 using .lennardjones
-using .lennardjonesangle
 using .generalpowers
 using .generalangle
+using .topology
+
 
 
 

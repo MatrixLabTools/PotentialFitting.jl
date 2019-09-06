@@ -41,8 +41,6 @@ function potentials.calculate_potential(cluster1::Cluster, cluster2::Cluster,
     r = distances(cluster1, indices.first[1], cluster2, indices.second[1]) ./ 0.52917721090
 
     rip = map(x->r^x, potential.powers)
-    r6 = r^-6
-    r12 = r6^2
     return sum( rip .* potential.constants )
 end
 
@@ -76,5 +74,9 @@ PairPotentialTopology{GeneralPowers}(C(-6)=0.0  C(-12)=0.0  , PairTopologyIndice
 macro GeneralPowers(indices, i...)
     return :(PairPotentialTopology{GeneralPowers}(GeneralPowers($(i)...),PairTopologyIndices($(indices)...)))
 end
+
+
+(p::GeneralPowers)(r) = sum([a.*r.^b for (a,b) in zip(p.constants, p.powers) ])
+
 
 end #module

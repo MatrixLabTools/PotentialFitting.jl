@@ -7,7 +7,7 @@ export GeneralAngle
 
 
 """
-GeneralAngle <: AbstractPairPotential
+GeneralAngle <: AbstractClusterPotential
 
 General potential with customizable powers for both radial polynomials and cosθ.
 
@@ -21,7 +21,7 @@ To create potential use:
 GeneralAngle(ppowers::AbstractVector{Int}, cpowers::AbstractVector{Int})
 ```
 """
-mutable struct GeneralAngle <: AbstractPairPotential
+mutable struct GeneralAngle <: AbstractClusterPotential
     constants::Array{Float64,2}
     "Powers for radial polynomials"
     ppowers::Vector{Int}
@@ -78,5 +78,13 @@ function potentials.get_potential!(potential::GeneralAngle, constants...)
         potential.constants[i] = constants[i]
     end
 end
+
+function (p::GeneralAngle)(r,α)
+    c = cos.(α)
+    cp = c.^p.cpowers
+    rp = r.^p.ppowers
+    p.constants .* (cp * rp')
+end
+
 
 end  # module generalangle.jl
