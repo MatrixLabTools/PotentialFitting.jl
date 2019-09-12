@@ -1,6 +1,5 @@
 using Documenter
-using PotentialFitting, PotentialCalculation
-import Pkg; Pkg.add("ScikitLearn")
+using PotentialFitting, PotentialCalculation, ScikitLearn
 
 makedocs(sitename="PotentialFitting.jl",
          pages=["Home" => "index.md",
@@ -9,5 +8,5 @@ makedocs(sitename="PotentialFitting.jl",
 )
 
 deploydocs(
-    repo = "github.com/tjjarvinen/PotentialFitting.jl.git",
+    repo = "github.com/MatrixLabTools/PotentialFitting.jl.git",
 )
