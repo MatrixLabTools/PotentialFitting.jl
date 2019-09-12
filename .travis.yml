@@ -13,7 +13,7 @@ jobs:
             python3-sklearn
       script:
         - julia --project=docs/ --color=yes --check-bounds=yes -e 'using Pkg;
-                 Pkg.Registry.add("https://github.com/MatrixLabTools/PackageRegistry");
+                 Pkg.Registry.add(PackageSpec(url="https://github.com/MatrixLabTools/PackageRegistry"));
                  Pkg.instantiate(); Pkg.build(); Pkg.test(coverage=true)'
       after_success:
         - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
@@ -21,13 +21,14 @@ jobs:
     - stage: "Documentation"
       julia: 1.2
       os: linux
+      dist: bionic
       addons:
           apt:
             packages:
               python3-sklearn
       script:
         - julia --project=docs/ --color=yes --check-bounds=yes -e 'using Pkg;
-                 Pkg.Registry.add("https://github.com/MatrixLabTools/PackageRegistry");
+                 Pkg.Registry.add(PackageSpec(url="https://github.com/MatrixLabTools/PackageRegistry"));
                  Pkg.instantiate(); Pkg.build()'
         - julia --project=docs/ docs/make.jl
       after_success: skip
