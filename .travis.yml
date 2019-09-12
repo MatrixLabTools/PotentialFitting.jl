@@ -13,8 +13,10 @@ jobs:
             python3-sklearn
       script:
         - julia --project=docs/ --color=yes --check-bounds=yes -e 'using Pkg;
-                 Pkg.Registry.add(RegistrySpec(url="https://github.com/MatrixLabTools/PackageRegistry"));
-                 Pkg.instantiate(); Pkg.build(); Pkg.test(coverage=true)'
+                 Pkg.Registry.add(RegistrySpec(url="https://github.com/MatrixLabTools/PackageRegistry"));'
+        - julia --project=docs/ --color=yes --check-bounds=yes -e 'using Pkg; Pkg.instantiate()'
+        - julia --project=docs/ --color=yes --check-bounds=yes -e 'using Pkg; Pkg.build();'
+        - julia --project=docs/ --color=yes --check-bounds=yes -e 'using Pkg; Pkg.test(coverage=true)'
       after_success:
         - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
 
