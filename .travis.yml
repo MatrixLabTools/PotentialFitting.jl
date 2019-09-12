@@ -28,8 +28,9 @@ jobs:
             packages:
               python3-sklearn
       script:
-        - julia --project=docs/ --color=yes --check-bounds=yes -e 'using Pkg;
+        - julia --color=yes --project=docs/ -e 'using Pkg;
                  Pkg.Registry.add(RegistrySpec(url="https://github.com/MatrixLabTools/PackageRegistry"));
+                 Pkg.Registry.add(RegistrySpec(url="https://github.com/JuliaRegistries/General"));
                  Pkg.develop(PackageSpec(path=pwd()));
                  Pkg.instantiate(); Pkg.build()'
         - julia --project=docs/ docs/make.jl
