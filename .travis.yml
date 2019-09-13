@@ -32,6 +32,7 @@ jobs:
                  Pkg.Registry.add(RegistrySpec(url="https://github.com/MatrixLabTools/PackageRegistry"));
                  Pkg.Registry.add(RegistrySpec(url="https://github.com/JuliaRegistries/General"));
                  Pkg.develop(PackageSpec(path=pwd()));
-                 Pkg.instantiate(); Pkg.build()'
+                 Pkg.instantiate(); Pkg.build(),
+                 Pkg.add("PotentialCalculation")'
         - julia --project=docs/ docs/make.jl
       after_success: skip
