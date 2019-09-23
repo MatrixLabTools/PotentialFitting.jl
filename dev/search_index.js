@@ -169,31 +169,15 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "#PotentialFitting.potentials.calculate_potential-Tuple{Cluster,Cluster,Any,PairTopologyIndices}",
+    "location": "#PotentialFitting.potentials.calculate_potential-Tuple{AbstractPairPotential,AbstractCluster,Any}",
     "page": "Home",
     "title": "PotentialFitting.potentials.calculate_potential",
     "category": "method",
-    "text": "calculate_potential(cluster1::Cluster, cluster2::Cluster,                            potential, indics::PairTopologyIndices)\n\nCalculates energy from given potential. Needs to be implemented for each potential.\n\nArguments\n\ncluster1::Cluster  : first molecule\ncluster2::Cluster  : second molecule\npotential          : potential\nindics::PairTopologyIndices   : indices for atoms that represent potential\n\n\n\n\n\n"
+    "text": "calculate_potential(potential::AbstractPotential, cluster::AbstractCluster, indices)\n\nCalculates energy from given potential. Needs to be implemented for each potential.\n\nArguments\n\npotential::AbstractPairPotential  : potential\ncluster::AbstractCluster          : molecule cluster\nindices                           : indices for atoms that represent potential\n\n\n\n\n\n"
 },
 
 {
-    "location": "#PotentialFitting.potentials.calculate_potential-Tuple{MoleculePairPotential,Any}",
-    "page": "Home",
-    "title": "PotentialFitting.potentials.calculate_potential",
-    "category": "method",
-    "text": "calculate_potential(mpp::MoleculePairPotential, points)\n\nCalculates potential energy for given points. Returns them as an array of same size as points\n\n\n\n\n\n"
-},
-
-{
-    "location": "#PotentialFitting.potentials.calculate_potential-Tuple{MoleculePairPotential,Cluster,Cluster}",
-    "page": "Home",
-    "title": "PotentialFitting.potentials.calculate_potential",
-    "category": "method",
-    "text": "calculate_potential(mpp::MoleculePairPotential, cluster1::Cluster, cluster2::Cluster)\n\nCalculates potential energy\n\n\n\n\n\n"
-},
-
-{
-    "location": "#PotentialFitting.potentials.get_potential!-Tuple{Any,Any}",
+    "location": "#PotentialFitting.potentials.get_potential!-Tuple{AbstractPotential,Any}",
     "page": "Home",
     "title": "PotentialFitting.potentials.get_potential!",
     "category": "method",
@@ -201,19 +185,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "#PotentialFitting.potentials.potential_variables-Tuple{MoleculePairPotential,Any,Any}",
-    "page": "Home",
-    "title": "PotentialFitting.potentials.potential_variables",
-    "category": "method",
-    "text": "potential_variables(mpp::MoleculePairPotential, cluster1, cluster2)\n\nUsed to transform cluster data to fittable form.\n\nArguments\n\nmpp::MoleculePairPotential : potential to be fitted\ncluster1 : array for clusters\ncluster2 : array for clusters\n\nReturns\n\nArray holding an array for each potential term in mpp.topology that can the be used for fitting.\n\n\n\n\n\n"
-},
-
-{
     "location": "#PotentialFitting.potentials.potential_variables-Tuple{MoleculePairPotential,Any}",
     "page": "Home",
     "title": "PotentialFitting.potentials.potential_variables",
     "category": "method",
-    "text": "potential_variables(mpp::MoleculePairPotential, points)\n\nUsed to transform cluster data to fittable form.\n\nArguments\n\nmpp::MoleculePairPotential : potential to be fitted\ncluster1 : array for clusters\n\nReturns\n\nArray holding an array for each potential term in mpp.topology that can the be used for fitting.\n\n\n\n\n\n"
+    "text": "potential_variables(mpp::MoleculePairPotential, points)\n\nUsed to transform cluster data to fittable form.\n\nArguments\n\nmpp::MoleculePairPotential : potential to be fitted\npoints : array for clusters\n\nReturns\n\nArray holding an array for each potential term in mpp.topology that can the be used for fitting.\n\n\n\n\n\n"
 },
 
 {
@@ -241,43 +217,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "#PotentialFitting.potentials.PairPotentialTopology",
-    "page": "Home",
-    "title": "PotentialFitting.potentials.PairPotentialTopology",
-    "category": "type",
-    "text": "PairPotentialTopology{T}\n\nPotential topology for pair of molecules. Complite potential can be described by several on these structures.\n\nFields\n\npotential::T : potential\nindices::Vector{PairTopologyIndices}  : indices for atoms that have this potential\n\n\n\n\n\n"
-},
-
-{
-    "location": "#PotentialFitting.potentials.PairTopologyIndices",
-    "page": "Home",
-    "title": "PotentialFitting.potentials.PairTopologyIndices",
-    "category": "type",
-    "text": "PairTopologyIndices\n\nHold information of atom indices for potential calculations.\n\nFields\n\nfirst::Vector{Int64} : indices for first molecule\nsecond::Vector{Int64} : indices for second molecule\n\n\n\n\n\n"
-},
-
-{
-    "location": "#PotentialFitting.potentials.clusters_to_potential_variables-Tuple{Any,Cluster,Cluster,PairTopologyIndices}",
-    "page": "Home",
-    "title": "PotentialFitting.potentials.clusters_to_potential_variables",
-    "category": "method",
-    "text": "clusterstopotential_variables(potential, c1::Cluster, c2::Cluster, indeces::PairTopologyIndices)\n\nReturns data in a form that can be used to fit potential (linearly). That is as an array of terms. Example for Lennard Jones potential this is [r^-6 r^-12]. Needs to be implemented for each potential.\n\n\n\n\n\n"
-},
-
-{
-    "location": "#PotentialFitting.lennardjones.LJ",
-    "page": "Home",
-    "title": "PotentialFitting.lennardjones.LJ",
-    "category": "type",
-    "text": "LJ\n\nAcronym for LennardJones{Float64}\n\n\n\n\n\n"
-},
-
-{
     "location": "#PotentialFitting.lennardjones.LennardJones",
     "page": "Home",
     "title": "PotentialFitting.lennardjones.LennardJones",
     "category": "type",
-    "text": "LennardJones{T} <: AbstractPairPotential\n\nHolds constants for Lennard-Jones potential     E = C12/R^12 - C6/R^6\n\n\n\n\n\n"
+    "text": "LennardJones <: AbstractPairPotential\n\nHolds constants for Lennard-Jones potential     E = C12/R^12 - C6/R^6\n\n\n\n\n\n"
 },
 
 {
@@ -325,7 +269,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Usage",
     "title": "Setting up Molecules",
     "category": "section",
-    "text": "Next part in defining topology for the potential. This is started by creating two molecules. The information is in the loaded file.m1=MoleculeIdenticalInformation{AtomOnlySymbol}(data[\"cluster1\"].atoms)\nm2=MoleculeIdenticalInformation{AtomOnlySymbol}(data[\"cluster2\"].atoms)\n\nshow(m1) # hide\nshow(m2) # hideIf neede atoms can be flagged as identical.# Atoms 2 and 3 are identical\nmakeidentical!(m1, (2,3))"
+    "text": "Next part in defining topology for the potential. This is started by creating two molecules. The information is in the loaded file.m1=MoleculeIdenticalInformation{AtomOnlySymbol}(data[\"cluster1\"].atoms)\nm2=MoleculeIdenticalInformation{AtomOnlySymbol}(data[\"cluster2\"].atoms)\n\nshow(m1)\nshow(m2)If neede atoms can be flagged as identical.# Atoms 2 and 3 are identical\nmakeidentical!(m1, (2,3))"
 },
 
 {
@@ -333,7 +277,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Usage",
     "title": "Potential Topology",
     "category": "section",
-    "text": "Next we need to define topology for the potential.mpp = MoleculePairPotential(m1,m2, LJ())"
+    "text": "Next we need to define topology for the potential.mpp = MoleculePairPotential(m1,m2, LennardJones())"
 },
 
 {
@@ -341,7 +285,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Usage",
     "title": "Finetuning Potential",
     "category": "section",
-    "text": "Alternatively potential can be tuned complitely by adding potentials one by one.# Array where topology is saved\ntopo=[]\n\n#We can push potential to to this array one at the time\npush!(topo,\n      PairPotentialTopology{LJ}(PairTopologyIndices(1,1))\n     )\nnothing # hideIf needed we can specify which atoms should be treated as identical, by adding information for it  in the topology.# Atoms 2 and 3 of molecule 1 have same potential to to atom 1 of molecule 2\npush!(topo,\n      PairPotentialTopology{LJ}([PairTopologyIndices(2,1), PairTopologyIndices(3,1)])\n     )\nnothing # hideIf default form of potential is not enough it can be tuned, by giving it as an input.push!(topo,\n      PairPotentialTopology{GeneralPowers}(GeneralPowers(-6,-12), PairTopologyIndices(4,1))\n     )\npush!(topo,\n     PairPotentialTopology{GeneralPowers}(GeneralPowers(-6,-8, -10, -12), PairTopologyIndices(4,1))\n    )\nnothing # hideHere we used general polynomial potential GeneralPowers to make customized polynomic potential.We can now create potential.mpp1=MoleculePairPotential(m1,m2)\nmpp1.topology = topo\n\nshow(mpp1)"
+    "text": "Alternatively potential can be tuned complitely by adding potentials one by one.# Array where topology is saved\ntopo=[]\n\n#We can push potential to to this array one at the time\npush!(topo,\n      # Molecule 1 has 5 atoms so index 6 is molecule 2, or argon now\n      PairPotentialTopology(LennardJones(), 1,6))\n     )\nnothing # hideIf needed we can specify which atoms should be treated as identical, by adding information for it  in the topology.# Atoms 2 and 3 of molecule 1 have same potential to to atom 1 of molecule 2\npush!(topo,\n      PairPotentialTopology(LennardJones(), [(2,6), (3,6)])\n     )\nnothing # hideIf default form of potential is not enough it can be tuned, by giving it as an input.push!(topo,\n      PairPotentialTopology(GeneralPowers(-6,-12), 4,6))\n     )\npush!(topo,\n     PairPotentialTopology(GeneralPowers(-6,-8, -10, -12), 5,6)\n    )\nnothing # hideHere we used general polynomial potential GeneralPowers to make customized polynomic potential.We can now create potential.mpp1=MoleculePairPotential(m1,m2)\nmpp1.topology = topo\n\nshow(mpp1)"
 },
 
 {
