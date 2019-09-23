@@ -35,5 +35,5 @@ jobs:
                  Pkg.instantiate(); Pkg.build();
                  Pkg.add("PotentialCalculation");
                  Pkg.add("ScikitLearn")'
-        - julia --project=docs/ docs/make.jl
+        - julia --color=yes --project=docs/ docs/make.jl
       after_success: skip

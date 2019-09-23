@@ -3,7 +3,7 @@
 To calculate potential energy surface refer to [PotentialCalculation](https://github.com/tjjarvinen/PotentialCalculation.jl).Ones you have potential energy calculated you can open
 it for fitting by using
 
-```@example 1
+```@example
 using PotentialCalculation
 using PotentialFitting
 
@@ -23,8 +23,8 @@ molecules. The information is in the loaded file.
 m1=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster1"].atoms)
 m2=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster2"].atoms)
 
-show(m1) # hide
-show(m2) # hide
+show(m1)
+show(m2)
 ```
 
 If neede atoms can be flagged as identical.
@@ -39,7 +39,7 @@ makeidentical!(m1, (2,3))
 Next we need to define topology for the potential.
 
 ```@example 1
-mpp = MoleculePairPotential(m1,m2, LJ())
+mpp = MoleculePairPotential(m1,m2, LennardJones())
 ```
 
 ### Finetuning Potential
@@ -52,7 +52,8 @@ topo=[]
 
 #We can push potential to to this array one at the time
 push!(topo,
-      PairPotentialTopology{LJ}(PairTopologyIndices(1,1))
+      # Molecule 1 has 5 atoms so index 6 is molecule 2, or argon now
+      PairPotentialTopology(LennardJones(), 1,6))
      )
 nothing # hide
 ```
@@ -64,7 +65,7 @@ information for it  in the topology.
 ```@example 1
 # Atoms 2 and 3 of molecule 1 have same potential to to atom 1 of molecule 2
 push!(topo,
-      PairPotentialTopology{LJ}([PairTopologyIndices(2,1), PairTopologyIndices(3,1)])
+      PairPotentialTopology(LennardJones(), [(2,6), (3,6)])
      )
 nothing # hide
 ```
@@ -74,10 +75,10 @@ If default form of potential is not enough it can be tuned, by giving it as an i
 
 ```@example 1
 push!(topo,
-      PairPotentialTopology{GeneralPowers}(GeneralPowers(-6,-12), PairTopologyIndices(4,1))
+      PairPotentialTopology(GeneralPowers(-6,-12), 4,6))
      )
 push!(topo,
-     PairPotentialTopology{GeneralPowers}(GeneralPowers(-6,-8, -10, -12), PairTopologyIndices(4,1))
+     PairPotentialTopology(GeneralPowers(-6,-8, -10, -12), 5,6)
     )
 nothing # hide
 ```

@@ -157,7 +157,7 @@ function rmsd(points, energy, mpp::MoleculePairPotential; emax=0, unit="cm^-1")
     @assert size(points) == size(energy) "points and energy need to have same size"
     e = energy_from(emax,unit)
     i = energy .< e
-    ec = calculate_potential(mpp, points)
+    ec = mpp.(points)
     return std(ec[i]-energy[i])
 end
 

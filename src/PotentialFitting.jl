@@ -9,6 +9,7 @@ export AbstractPotential,
        get_potential!,
        MoleculePairPotential,
        PairPotentialTopology,
+       ClusterPotentialTopology,
        PairTopologyIndices,
        potential_variables,
        PotentialTopology,
@@ -32,9 +33,6 @@ export AbstractPotential,
        visualize_point_bio3dview,
 
        LennardJones,
-       LJ,
-       LennardJonesAngle,
-       LJA,
        GeneralPowers, @GeneralPowers,
        GeneralAngle
 
@@ -44,9 +42,10 @@ include("potentials.jl")
 include("fit.jl")
 include("visualize.jl")
 include("potentials/LennardJones.jl")
-include("potentials/LennardJonesAngle.jl")
 include("potentials/GeneralPowers.jl")
 include("potentials/GeneralAngle.jl")
+
+
 
 
 
@@ -54,9 +53,9 @@ using .potentials
 using .fit
 using .visualize
 using .lennardjones
-using .lennardjonesangle
 using .generalpowers
 using .generalangle
+
 
 
 
