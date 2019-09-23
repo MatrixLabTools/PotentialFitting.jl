@@ -35,21 +35,18 @@ function Base.show(io::IO, potential::GeneralPowers; energy_unit="hartree")
     end
 end
 
-function potentials.calculate_potential(cluster1::Cluster, cluster2::Cluster,
-                           potential::GeneralPowers, indices::PairTopologyIndices)
+function potentials.calculate_potential(potential::GeneralPowers, cluster::AbstractCluster, indices)
     # Convert from Å to bohr
-    r = distances(cluster1, indices.first[1], cluster2, indices.second[1]) ./ 0.52917721090
-
-    rip = map(x->r^x, potential.powers)
-    return sum( rip .* potential.constants )
+    r = distances(cluster, indices[1], indices[2]) ./ 0.52917721090
+    return potential(r)
 end
 
 
-function potentials.clusters_to_potential_variables(potential::GeneralPowers,
-                            c1::Cluster, c2::Cluster, indeces::PairTopologyIndices) where{T}
+function potentials.potential_variables(potential::GeneralPowers,
+                            cluster::AbstractCluster, indices)
     # Convert from Å to bohr
-    r= distances(c1, indeces.first[1] , c2, indeces.second[1]) ./ 0.52917721090
-    return map(x->r^x, potential.powers)'
+    r= distances(cluster, indices[1], indices[2]) ./ 0.52917721090
+    return [r.^x for x in potential.powers]'
 end
 
 

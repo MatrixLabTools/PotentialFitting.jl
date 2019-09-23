@@ -43,7 +43,7 @@ Plots potential
 """
 function plot_potential(points, mpp::MoleculePairPotential; emax=100, unit="cm^-1",
                         leg=false, size=(800,400), font=font(20))
-    E = energy_to.(calculate_potential(mpp, points), unit)
+    E = energy_to.(mpp.(points), unit)
     r = min_distance(mpp, points)
     i = E .< emax
     plot(r[i], E[i],
@@ -78,7 +78,7 @@ function plot_compare(points, energy, mpp::MoleculePairPotential...; emax=100, u
          leg=leg, size=size, tickfont=font, seriestype=:scatter)
 
     for x in mpp
-        Efit = energy_to.(calculate_potential(x, points), unit)
+        Efit = energy_to.(x.(points), unit)
         plot!(r[i], Efit[i], label="Fit", tickfont=font)
     end
     out

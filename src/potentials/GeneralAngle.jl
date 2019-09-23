@@ -38,34 +38,20 @@ function Base.show(io::IO, potential::GeneralAngle; energy_unit="cm^-1")
 end
 
 
-function potentials.calculate_potential(cluster1::Cluster, cluster2::Cluster,
-                           potential::GeneralAngle, indices::PairTopologyIndices)
+function potentials.calculate_potential(potential::GeneralAngle,
+                                     cluster::AbstractCluster, indices)
     # Convert from Å to bohr
-    r = distances(cluster1, indices.first[1], cluster2, indices.second[1]) ./ 0.52917721090
-    if length(indices.first) > length(indices.second)
-        θ = cluster_angle(cluster1, indices.first[2], indices.first[1], cluster2, indices.second[1])
-    else
-        θ = cluster_angle(cluster2, indices.second[2], indices.second[1], cluster1, indices.first[1])
-    end
-    rr = r.^potential.ppowers
-    cθ = cos(θ).^potential.cpowers
-    out = 0.0
-    for i in 1:length(rr)
-        out += sum(potential.constants[:,i] .* cθ * rr[i])
-    end
-    return out
+    r = distances(cluster, indices[1], indices[2]) ./ 0.52917721090
+    θ = cluster_angle(cluster, indices[1], indices[2], indices[3])
+    return potential(r,θ)
 end
 
 
-function potentials.clusters_to_potential_variables(potential::GeneralAngle,
-                            c1::Cluster, c2::Cluster, indices::PairTopologyIndices)
+function potentials.potential_variables(potential::GeneralAngle,
+                            cluster::AbstractCluster, indices)
     # Convert from Å to bohr
-    r = distances(c1, indices.first[1], c2, indices.second[1]) ./ 0.52917721090
-    if length(indices.first) > length(indices.second)
-        θ = cluster_angle(c1, indices.first[2], indices.first[1], c2, indices.second[1])
-    else
-        θ = cluster_angle(c2, indices.second[2], indices.second[1], c1, indices.first[1])
-    end
+    r = distances(cluster, indices[1], indices[2]) ./ 0.52917721090
+    θ = cluster_angle(cluster, indices[1], indices[2], indices[3])
     rr = r.^potential.ppowers
     cθ = cos(θ).^potential.cpowers
     out = [  x .* cθ for x in rr ]
@@ -79,11 +65,11 @@ function potentials.get_potential!(potential::GeneralAngle, constants...)
     end
 end
 
-function (p::GeneralAngle)(r,α)
+function (p::GeneralAngle)(r::Number,α::Number)
     c = cos.(α)
     cp = c.^p.cpowers
     rp = r.^p.ppowers
-    p.constants .* (cp * rp')
+    sum(p.constants .* (cp * rp'))
 end
 
 

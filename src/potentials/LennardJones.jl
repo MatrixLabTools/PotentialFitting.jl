@@ -33,18 +33,15 @@ function Base.show(io::IO, potential::LennardJones; energy_unit="cm^-1")
 end
 
 
-function potentials.calculate_potential(cluster1::Cluster, cluster2::Cluster,
-                           potential::LennardJones, indices::PairTopologyIndices)
-    r = distances(cluster1, indices.first[1], cluster2, indices.second[1])
-    r6 = r^-6
-    r12 = r6^2
-    return potential.C12*r12 - potential.C6*r6
+function potentials.calculate_potential(cluster::AbstractCluster, potential::LennardJones, indices)
+    r = distances(cluster, indices[1], indices[2]) 
+    return p(r)
 end
 
 
-function potentials.clusters_to_potential_variables(potential::LennardJones,
-                            c1::Cluster, c2::Cluster, indeces::PairTopologyIndices)
-    r=distances(c1, indeces.first[1] , c2, indeces.second[1])
+function potentials.potential_variables(potential::LennardJones,
+                             c::AbstractCluster, indices)
+    r=distances(c, indices[1], indices[2])
     return [r^-6 r^-12]
 end
 

@@ -9,6 +9,7 @@ export AbstractPotential,
        get_potential!,
        MoleculePairPotential,
        PairPotentialTopology,
+       ClusterPotentialTopology,
        PairTopologyIndices,
        potential_variables,
        PotentialTopology,
@@ -33,16 +34,7 @@ export AbstractPotential,
 
        LennardJones,
        GeneralPowers, @GeneralPowers,
-       GeneralAngle,
-
-       AbstractTopology,
-       AbstractPairTopology,
-       AbstractClusterTopology,
-       AbstractPotentialTopology,
-       PairTopology,
-       MultiPairTopology,
-       ClusterToplogy,
-       PotentialTopology
+       GeneralAngle
 
 
 
@@ -52,7 +44,7 @@ include("visualize.jl")
 include("potentials/LennardJones.jl")
 include("potentials/GeneralPowers.jl")
 include("potentials/GeneralAngle.jl")
-include("topology.jl")
+
 
 
 
@@ -63,7 +55,6 @@ using .visualize
 using .lennardjones
 using .generalpowers
 using .generalangle
-using .topology
 
 
 
