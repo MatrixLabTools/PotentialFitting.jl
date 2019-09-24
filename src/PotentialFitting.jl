@@ -1,6 +1,8 @@
 module PotentialFitting
 
-using PotentialCalculation, ScikitLearn
+using Reexport
+using ScikitLearn
+@reexport using PotentialCalculation
 
 export AbstractPotential,
        AbstractClusterPotential,
