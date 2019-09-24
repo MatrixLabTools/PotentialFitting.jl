@@ -233,14 +233,6 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "#PotentialFitting.generalpowers.@GeneralPowers-Tuple{Any,Vararg{Any,N} where N}",
-    "page": "Home",
-    "title": "PotentialFitting.generalpowers.@GeneralPowers",
-    "category": "macro",
-    "text": "@GeneralPowers(indices, i...)\n\nUsed to simplify potential generation. Generates GeneralPowers potential and topology for it.\n\nExamples\n\njulia> @GeneralPowers (1,1) -6 -12\nPairPotentialTopology{GeneralPowers}(C(-6)=0.0  C(-12)=0.0  , PairTopologyIndices[PairTopologyIndices([1], [1])])\n\n\n\n\n\n"
-},
-
-{
     "location": "#Potentials-1",
     "page": "Home",
     "title": "Potentials",
@@ -261,7 +253,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Usage",
     "title": "Usage",
     "category": "section",
-    "text": "To calculate potential energy surface refer to PotentialCalculation.Ones you have potential energy calculated you can open it for fitting by usingusing PotentialCalculation\nusing PotentialFitting\n\n# There is an example potential in test/data directory\nfname=normpath(joinpath(dirname(pathof(PotentialFitting)),\"../test\", \"data\", \"test.jld\"))\n\n# Load potential\ndata=load_data_file(fname)"
+    "text": "To calculate potential energy surface refer to PotentialCalculation.Ones you have potential energy calculated you can open it for fitting by usingusing PotentialFitting\n\n# There is an example potential in test/data directory\nfname=normpath(joinpath(dirname(pathof(PotentialFitting)),\"../test\", \"data\", \"test.jld\"))\n\n# Load potential\ndata=load_data_file(fname)"
 },
 
 {
