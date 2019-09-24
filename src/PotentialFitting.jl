@@ -35,7 +35,7 @@ export AbstractPotential,
        visualize_point_bio3dview,
 
        LennardJones,
-       GeneralPowers, @GeneralPowers,
+       GeneralPowers,
        GeneralAngle
 
 

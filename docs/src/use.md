@@ -3,8 +3,7 @@
 To calculate potential energy surface refer to [PotentialCalculation](https://github.com/tjjarvinen/PotentialCalculation.jl).Ones you have potential energy calculated you can open
 it for fitting by using
 
-```@example
-using PotentialCalculation
+```@example 1
 using PotentialFitting
 
 # There is an example potential in test/data directory

@@ -4,7 +4,7 @@ using ..potentials
 using PotentialCalculation
 
 
-export GeneralPowers, @GeneralPowers
+export GeneralPowers
 
 
 """
@@ -53,23 +53,6 @@ end
 function potentials.get_potential!(potential::GeneralPowers, constants...)
     @assert length(constants) == length(potential.constants)  "length of constants with GeneralJones potential do not match"
     potential.constants .= constants
-end
-
-
-"""
-    @GeneralPowers(indices, i...)
-
-Used to simplify potential generation. Generates [`GeneralPowers`](@ref) potential
-and topology for it.
-
-# Examples
-```jldoctest; setup = :(using PotentialFitting.generalpowers, PotentialFitting.potentials )
-julia> @GeneralPowers (1,1) -6 -12
-PairPotentialTopology{GeneralPowers}(C(-6)=0.0  C(-12)=0.0  , PairTopologyIndices[PairTopologyIndices([1], [1])])
-```
-"""
-macro GeneralPowers(indices, i...)
-    return :(PairPotentialTopology{GeneralPowers}(GeneralPowers($(i)...),PairTopologyIndices($(indices)...)))
 end
 
 
