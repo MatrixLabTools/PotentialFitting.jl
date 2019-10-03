@@ -121,14 +121,6 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "#PotentialFitting.fit.rmsd-Tuple{Any,Any,MoleculePairPotential}",
-    "page": "Home",
-    "title": "PotentialFitting.fit.rmsd",
-    "category": "method",
-    "text": "rmsd(points, energy, mpp::MoleculePairPotential; emax=0, unit=\"cm^-1\")\n\nCalculates root mean square error for potential mpp.\n\nAtributes\n\npoints                      : points where potential is tested\nenergy                      : referece energy for given points\nmpp::MoleculePairPotential  : potential\nemax=0                      : cut points where energy is larger than this\nunit=\"cm^-1\"                : unit for emax\n\n\n\n\n\n"
-},
-
-{
     "location": "#PotentialFitting.fit.setweight_e_less!",
     "page": "Home",
     "title": "PotentialFitting.fit.setweight_e_less!",
@@ -142,6 +134,14 @@ var documenterSearchIndex = {"docs": [
     "title": "PotentialFitting.fit.setweight_e_more!",
     "category": "method",
     "text": "setweightemore!(data::FitData, w, e; unit=\"cm-1\")\n\nSets weigth when energy is more than given one.\n\nArguments\n\ndata::FitData  : data where weigth is adjusted\nw              : new weigth\ne              : energy\nunit=\"cm-1\"    : energy unit\n\n\n\n\n\n"
+},
+
+{
+    "location": "#StatsBase.rmsd-Tuple{Any,Any,MoleculePairPotential}",
+    "page": "Home",
+    "title": "StatsBase.rmsd",
+    "category": "method",
+    "text": "rmsd(points, energy, mpp::MoleculePairPotential; emax=0, unit=\"cm^-1\")\n\nCalculates root mean square error for potential mpp.\n\nAtributes\n\npoints                      : points where potential is tested\nenergy                      : referece energy for given points\nmpp::MoleculePairPotential  : potential\nemax=0                      : cut points where energy is larger than this\nunit=\"cm^-1\"                : unit for energy\n\n\n\n\n\n"
 },
 
 {
