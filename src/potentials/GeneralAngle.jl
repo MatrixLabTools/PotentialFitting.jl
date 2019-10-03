@@ -6,6 +6,11 @@ using PotentialCalculation
 export GeneralAngle
 
 
+# NOTE distance in potentials is ångströms when fitting.
+# But bohrs when CP2K calculates them. So that is why there is
+# 0.52917721090 -terms in few places.
+
+
 """
 GeneralAngle <: AbstractClusterPotential
 
@@ -68,7 +73,7 @@ end
 function (p::GeneralAngle)(r::Number,α::Number)
     c = cos.(α)
     cp = c.^p.cpowers
-    rp = r.^p.ppowers
+    rp = (r./0.52917721090).^p.ppowers
     sum(p.constants .* (cp * rp'))
 end
 

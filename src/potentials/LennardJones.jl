@@ -34,8 +34,8 @@ end
 
 
 function potentials.calculate_potential(cluster::AbstractCluster, potential::LennardJones, indices)
-    r = distances(cluster, indices[1], indices[2]) 
-    return p(r)
+    r = distances(cluster, indices[1], indices[2])
+    return potential(r)
 end
 
 

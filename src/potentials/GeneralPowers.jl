@@ -7,6 +7,11 @@ using PotentialCalculation
 export GeneralPowers
 
 
+# NOTE distance in potentials is ångströms when fitting.
+# But bohrs when CP2K calculates them. So that is why there is
+# 0.52917721090 -terms in few places.
+
+
 """
 GeneralPowers
 
@@ -56,7 +61,7 @@ function potentials.get_potential!(potential::GeneralPowers, constants...)
 end
 
 
-(p::GeneralPowers)(r) = sum([a.*r.^b for (a,b) in zip(p.constants, p.powers) ])
+(p::GeneralPowers)(r) = sum([a.*(r./0.52917721090).^b for (a,b) in zip(p.constants, p.powers) ])
 
 
 end #module

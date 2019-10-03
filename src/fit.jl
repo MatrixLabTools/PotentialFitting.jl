@@ -13,7 +13,7 @@ export FitData,
 
 using ScikitLearn
 using ..potentials, PotentialCalculation
-using Statistics:std
+import StatsBase:rmsd
 
 
 @sk_import linear_model: LinearRegression
@@ -151,14 +151,14 @@ Calculates root mean square error for potential `mpp`.
 - `energy`                      : referece energy for given points
 - `mpp::MoleculePairPotential`  : potential
 - `emax=0`                      : cut points where energy is larger than this
-- `unit="cm^-1"`                : unit for `emax`
+- `unit="cm^-1"`                : unit for energy
 """
 function rmsd(points, energy, mpp::MoleculePairPotential; emax=0, unit="cm^-1")
     @assert size(points) == size(energy) "points and energy need to have same size"
     e = energy_from(emax,unit)
     i = energy .< e
     ec = mpp.(points)
-    return std(ec[i]-energy[i])
+    return energy_to(rmsd(ec[i], energy[i]),unit)
 end
 
 
