@@ -4,13 +4,12 @@ To calculate potential energy surface refer to [PotentialCalculation](https://gi
 it for fitting by using
 
 ```@example 1
-using PotentialFitting
+using PotentialFitting, PotentialCalculation
 
 # There is an example potential in test/data directory
-fname=normpath(joinpath(dirname(pathof(PotentialFitting)),"../test", "data", "test.jld"))
-
-# Load potential
-data=load_data_file(fname)
+using PotentialDB
+r = defaultregistry()
+data=loadpotential(r,"4")
 ```
 
 ## Setting up Molecules
@@ -18,12 +17,9 @@ data=load_data_file(fname)
 Next part in defining topology for the potential. This is started by creating two
 molecules. The information is in the loaded file.
 
-```@example 1
+```@repl 1
 m1=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster1"].atoms)
 m2=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster2"].atoms)
-
-show(m1)
-show(m2)
 ```
 
 If neede atoms can be flagged as identical.
@@ -52,7 +48,7 @@ topo=[]
 #We can push potential to to this array one at the time
 push!(topo,
       # Molecule 1 has 5 atoms so index 6 is molecule 2, or argon now
-      PairPotentialTopology(LennardJones(), 1,6))
+      PairPotentialTopology(LennardJones(), 1,6)
      )
 nothing # hide
 ```
@@ -74,7 +70,7 @@ If default form of potential is not enough it can be tuned, by giving it as an i
 
 ```@example 1
 push!(topo,
-      PairPotentialTopology(GeneralPowers(-6,-12), 4,6))
+      PairPotentialTopology(GeneralPowers(-6,-12), 4,6)
      )
 push!(topo,
      PairPotentialTopology(GeneralPowers(-6,-8, -10, -12), 5,6)

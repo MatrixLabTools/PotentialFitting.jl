@@ -1,8 +1,8 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 PotentialCalculation = "76415700-ec45-11e8-0f65-f1df3c899b21"
+PotentialDB = "e899a7e1-cf22-409b-b35c-84b9d10c2c8e"
 ScikitLearn = "3646fa90-6ef7-5e7e-9f22-8aca16db6324"
 
-
 [compat]
-Documenter = "~0.21"
+Documenter = "~0.23"

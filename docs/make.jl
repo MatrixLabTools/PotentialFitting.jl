@@ -1,9 +1,10 @@
 using Documenter
-using PotentialFitting, PotentialCalculation, ScikitLearn
+using PotentialFitting, PotentialCalculation
 
 makedocs(sitename="PotentialFitting.jl",
          pages=["Home" => "index.md",
-                "Usage" => "use.md"]
+                "Usage" => "use.md",
+                "Example use case" => "exampleusecase.md"]
 
 )
 
