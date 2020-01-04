@@ -22,7 +22,7 @@ m1=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster1"].atoms)
 m2=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster2"].atoms)
 ```
 
-If neede atoms can be flagged as identical.
+If needed atoms can be flagged as identical.
 
 ```@example 1
 # Atoms 2 and 3 are identical

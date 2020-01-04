@@ -27,6 +27,7 @@ abstract type AbstractClusterPotential <: AbstractPotential end
 
 """
     AbstractPairPotential  <: AbstractPotential
+
 Potential that depends only on distance between two atoms
 """
 abstract type AbstractPairPotential  <: AbstractPotential end
@@ -41,7 +42,15 @@ abstract type AbstractPairPotentialTopology{T<:AbstractPairPotential} <: Abstrac
 abstract type AbstractClusterPotentialTopology{T<:AbstractClusterPotential} <: AbstractPotentialTopology end
 
 
+"""
+PairPotentialTopology{T} <: AbstractPairPotentialTopology{T}
 
+Container that maps a pair potential to respective atoms.
+
+# Fields
+- `indices::Vector{Tuple{Int, Int}}`: Stores information of atom pair(s) between which the potentilal exist
+- `potential::T`: Potential structure
+"""
 struct PairPotentialTopology{T} <: AbstractPairPotentialTopology{T}
     potential::T
     indices::Vector{Tuple{Int, Int}}
@@ -50,22 +59,44 @@ struct PairPotentialTopology{T} <: AbstractPairPotentialTopology{T}
 end
 
 
+"""
+(p::PairPotentialTopology)(r)
 
+Returs potential for given distance.
+"""
 (p::PairPotentialTopology)(r) = p.potential(r)
 
 
+"""
+(p::PairPotentialTopology)(c::AbstractCluster)
+
+Returs potential for given cluster.
+"""
 function (p::PairPotentialTopology)(c::AbstractCluster)
     sum( [ p(distances(c, i, j)) for (i,j) in p.indices ] )
 end
 
 
+"""
+(p::PairPotentialTopology)(c1::AbstractCluster, c2::AbstractCluster)
+
+Returs potential for given cluster pair. Index for atom 2 is expected to be in cluster `c2`.
+"""
 function (p::PairPotentialTopology)(c1::AbstractCluster, c2::AbstractCluster)
     sum([p(distances(c1, j, c2, j)) for (i,j) in p.indeces ])
 end
 
 
 
+"""
+ClusterPotentialTopology{T} <: AbstractClusterPotentialTopology{T}
 
+Container that maps a cluster potential to respective atoms.
+
+# Fields
+- `indices::Vector{Vector{Int}}`: Stores information of atoms between which the potentilal exist
+- `potential::T`:
+"""
 struct ClusterPotentialTopology{T} <: AbstractClusterPotentialTopology{T}
     potential::T
     indices::Vector{Vector{Int}}

@@ -107,10 +107,10 @@ visualize_point_bio3dview(point::Cluster)
 Visualize point using [Bio3DView](https://github.com/jgreener64/Bio3DView.jl).
 Can be used wit IJulia and on html
 """
-function visualize_point_bio3dview(point::Cluster)
+function visualize_point_bio3dview(point::Cluster;  html=false)
     s=sprint(print_xyz,point)
     style= Style("sphere")
-    viewstring(s,"xyz",style=style)
+    viewstring(s,"xyz",style=style, html=html)
 end
 
 
@@ -155,7 +155,7 @@ Visualize geometry of points interactively using [`Interact`](https://juliagizmo
 
 
 # Arguments
-- `points`  : array of points, first dimension is displayd while second can be chosen
+- `points`  : array of points, first dimension is displayd while second can be chosen for index manipulation
 - `i=4`     : row index at with visialization is done
 """
 function scan_vizualize(points; i=4)
