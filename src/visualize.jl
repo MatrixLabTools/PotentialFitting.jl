@@ -102,7 +102,7 @@ function visualize_points(points; stdout=devnull, stderr=devnull, command="vmd")
 end
 
 """
-visualize_point_bio3dview(point::Cluster)
+visualize_point_bio3dview(point::Cluster; html=false)
 
 Visualize point using [Bio3DView](https://github.com/jgreener64/Bio3DView.jl).
 Can be used wit IJulia and on html
@@ -141,15 +141,15 @@ function scan_compare(points,energy, mppe...; emax=100, unit="cm^-1",
     wdg = dropdown(units, label="Energy unit")
     display(wdg)
 
-    plt = @manipulate for col in slider(1:s[2], label="Collumn")
-        plot_compare(points[:,col],energy[:,col], mppe..., emax=energy_to(e,wdg[]), unit=wdg[], leg=leg, size=fsize)
+    plt = @manipulate for x in wdg, col in slider(1:s[2], label="Collumn")
+        plot_compare(points[:,col],energy[:,col], mppe..., emax=energy_to(e,x), unit=x, leg=leg, size=fsize)
     end
     plt
 end
 
 
 """
-scan_vizualize(points; i=4)
+scan_vizualize(points; i=4, html=false)
 
 Visualize geometry of points interactively using [`Interact`](https://juliagizmos.github.io/Interact.jl/stable/)
 
@@ -157,14 +157,15 @@ Visualize geometry of points interactively using [`Interact`](https://juliagizmo
 # Arguments
 - `points`  : array of points, first dimension is displayd while second can be chosen for index manipulation
 - `i=4`     : row index at with visialization is done
+- `html=false` : if true give output as string of html
 """
-function scan_vizualize(points; i=4)
+function scan_vizualize(points; i=4, html=false)
     s = size(points)
     plt = @manipulate for col in slider(1:s[2], label="Collumn")
         if length(points[:,col]) >= i
-            visualize_point_bio3dview(points[i,col])
+            visualize_point_bio3dview(points[i,col], html=false)
         else
-            visualize_point_bio3dview(points[1,col])
+            visualize_point_bio3dview(points[1,col], html=false)
         end
     end
     plt
