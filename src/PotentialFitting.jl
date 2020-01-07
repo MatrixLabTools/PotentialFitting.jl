@@ -30,7 +30,7 @@ export AbstractPotential,
        plot_potential,
        plot_compare,
        scan_compare,
-       scan_vizualize,
+       scan_visualize,
        visualize_points,
        visualize_point_bio3dview,
 

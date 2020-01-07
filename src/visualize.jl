@@ -8,7 +8,7 @@ export min_distance,
        plot_potential,
        plot_compare,
        scan_compare,
-       scan_vizualize,
+       scan_visualize,
        visualize_points,
        visualize_point_bio3dview
 
@@ -159,13 +159,13 @@ Visualize geometry of points interactively using [`Interact`](https://juliagizmo
 - `i=4`     : row index at with visialization is done
 - `html=false` : if true give output as string of html
 """
-function scan_vizualize(points; i=4, html=false)
+function scan_visualize(points; i=4, html=false)
     s = size(points)
     plt = @manipulate for col in slider(1:s[2], label="Collumn")
         if length(points[:,col]) >= i
-            visualize_point_bio3dview(points[i,col], html=false)
+            visualize_point_bio3dview(points[i,col], html=html)
         else
-            visualize_point_bio3dview(points[1,col], html=false)
+            visualize_point_bio3dview(points[1,col], html=html)
         end
     end
     plt
