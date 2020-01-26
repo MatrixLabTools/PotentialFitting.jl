@@ -1,7 +1,12 @@
 module visualize
 
-using ..potentials, ..fit
-using Plots, PotentialCalculation, Bio3DView, Interact
+using ..potentials
+using ..fit
+
+using Bio3DView,
+      Interact,
+      Plots,
+      PotentialCalculation
 
 
 export min_distance,

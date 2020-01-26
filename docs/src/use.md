@@ -39,7 +39,7 @@ mpp = MoleculePairPotential(m1,m2, LennardJones())
 
 ### Finetuning Potential
 
-Alternatively potential can be tuned complitely by adding potentials one by one.
+Alternatively potential can be tuned completely by adding potentials one by one.
 
 ```@example 1
 # Array where topology is saved
@@ -113,8 +113,9 @@ nothing # hide
 ## Fitting Potential
 
 We also need to create fitting model. At the current moment only linear models
-can be used. Here we take normal linear regression, but any linear model suported
-by ScikitLearn can be used.
+can be used. Here we take normal linear regression, but any linear model
+supported by [ScikitLearn](https://github.com/cstjean/ScikitLearn.jl/)
+can be used.
 
 ```@example 1
 using ScikitLearn
