@@ -13,6 +13,12 @@ notifications:
 
 codecov: true
 
+addons:
+  apt:
+    packages:
+      python3-sklearn
+
+
 script:
   - julia --color=yes --check-bounds=yes -e 'using Pkg;
            Pkg.Registry.add(RegistrySpec(url="https://github.com/MatrixLabTools/PackageRegistry"));
@@ -31,6 +37,10 @@ jobs:
     - stage: "Documentation"
       julia: 1
       os: linux
+      addons:
+        apt:
+          packages:
+            python3-sklearn
       script:
         - julia --color=yes --project=docs/ -e 'using Pkg;
                  Pkg.Registry.add(RegistrySpec(url="https://github.com/MatrixLabTools/PackageRegistry"));
