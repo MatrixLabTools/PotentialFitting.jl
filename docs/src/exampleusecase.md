@@ -71,7 +71,7 @@ rmsd(data["Points"], data["Energy"], mpp, emax=-10)
 ```
 !!! note "Note"
     We are under fitting our potential, so we can safely compare the potential
-    to the data we used for fitting. But it would be a good idea to confirm this,
+    to the data we used for the fitting. But it would be a good idea to confirm this,
     by comparing to some data that was not used for fitting.
 
 
@@ -156,6 +156,9 @@ To to put the molecule into the box we use `gmx editconf` command
 ```
 gmx editconf -f tfa.pdb -box 8.6 8.6 8.6 -o tfa-b86.pdb
 ```
+
+Here we use 86x86x86 Å box, which is ok when using 1000-matrix atoms. But you can
+adjust this, depending on how many matrix atoms you have.
 
 Next we need to add argon atoms into the box. For this we use `gmx insert-molecules`
 command
@@ -435,7 +438,9 @@ you only need to edit this file in the future.
   @include qmmm.inc
 
   &SUBSYS
-    &CELL                    # box containing the molecule: 15x15x15 Angstroms
+    &CELL
+      # box containing the system,
+      # using 86x86x86 box we made earlier for the inputs
       ABC [angstrom] 86 86 86
     &END CELL
     &TOPOLOGY
@@ -525,14 +530,22 @@ you only need to edit this file in the future.
 
 # Molecular dynamics
 
-# The first equilibration
+Overview here is to start from gas phase and have the system to condense to
+solid matrix. To do this the simulation consist of 4 phases.
+
+- Equilibration from initial coordinates to some kind of gas.
+- Condensing gas solid.
+- Changing calculation method from semi-empirical to DFT and equilibrate it.
+- Calculate the spectrum.
+
+### The first equilibration
 
 Aim here is to create a super cooled gas that will compress to solid/liquid in
 the next phase. To do this we need to set simulation temperature to lower than
 boiling point. For argon 80 K is a good temperature. This can be done with the
 input file that was constructed earlier.
 
-# Condensing
+### Condensing
 
 To condense the system we need to change the dynamics to NTP, so that the external
 pressure will compress it. To do it we'll use following input file

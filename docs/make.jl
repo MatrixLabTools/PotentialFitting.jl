@@ -3,6 +3,7 @@ using PotentialFitting, PotentialCalculation
 
 makedocs(sitename="PotentialFitting.jl",
          pages=["Home" => "index.md",
+                "Install" => "install.md",
                 "Manual" => Any[
                     "Fitting Potential" => "use.md",
                     "Example Use Case" => "exampleusecase.md",
