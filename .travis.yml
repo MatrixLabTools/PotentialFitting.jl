@@ -21,8 +21,8 @@ addons:
 
 script:
   - julia --color=yes --check-bounds=yes -e 'using Pkg;
-           Pkg.Registry.add(RegistrySpec(url="https://github.com/MatrixLabTools/PackageRegistry"));
            Pkg.Registry.add(RegistrySpec(url="https://github.com/JuliaRegistries/General"));
+           Pkg.Registry.add(RegistrySpec(url="https://github.com/MatrixLabTools/PackageRegistry"));
            Pkg.instantiate(); Pkg.build(); Pkg.test(coverage=true)'
 
 
@@ -44,8 +44,8 @@ jobs:
             python3-sklearn
       script:
         - julia --color=yes --project=docs/ -e 'using Pkg;
-                 Pkg.Registry.add(RegistrySpec(url="https://github.com/MatrixLabTools/PackageRegistry"));
                  Pkg.Registry.add(RegistrySpec(url="https://github.com/JuliaRegistries/General"));
+                 Pkg.Registry.add(RegistrySpec(url="https://github.com/MatrixLabTools/PackageRegistry"));
                  Pkg.develop(PackageSpec(path=pwd()));
                  Pkg.instantiate();'
         - julia --color=yes --project=docs/ docs/make.jl
