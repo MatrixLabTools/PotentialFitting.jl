@@ -268,7 +268,7 @@ First we make the MM-potential file.
     &POISSON
       PERIODIC XYZ
       # CP2K needs ewald summation section in input. But for us it is useless,
-      # and you can but whatever values here.
+      # and you can put whatever values here.
       &EWALD
         EWALD_TYPE spme
         ALPHA .44
