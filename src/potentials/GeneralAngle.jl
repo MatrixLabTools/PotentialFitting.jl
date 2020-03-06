@@ -1,10 +1,3 @@
-module generalangle
-
-using ..potentials
-using PotentialCalculation
-
-export GeneralAngle
-
 
 # NOTE distance in potentials is ångströms when fitting.
 # But bohrs when CP2K calculates them. So that is why there is
@@ -43,7 +36,7 @@ function Base.show(io::IO, potential::GeneralAngle; energy_unit="cm^-1")
 end
 
 
-function potentials.calculate_potential(potential::GeneralAngle,
+function calculate_potential(potential::GeneralAngle,
                                      cluster::AbstractCluster, indices)
     # Convert from Å to bohr
     r = distances(cluster, indices[1], indices[2]) ./ 0.52917721090
@@ -52,7 +45,7 @@ function potentials.calculate_potential(potential::GeneralAngle,
 end
 
 
-function potentials.potential_variables(potential::GeneralAngle,
+function potential_variables(potential::GeneralAngle,
                             cluster::AbstractCluster, indices)
     # Convert from Å to bohr
     r = distances(cluster, indices[1], indices[2]) ./ 0.52917721090
@@ -63,7 +56,7 @@ function potentials.potential_variables(potential::GeneralAngle,
     return vcat(out...)'
 end
 
-function potentials.get_potential!(potential::GeneralAngle, constants...)
+function get_potential!(potential::GeneralAngle, constants...)
     @assert length(constants) == length(potential.constants)
     for i in eachindex(constants)
         potential.constants[i] = constants[i]
@@ -76,6 +69,3 @@ function (p::GeneralAngle)(r::Number,α::Number)
     rp = (r./0.52917721090).^p.ppowers
     sum(p.constants .* (cp * rp'))
 end
-
-
-end  # module generalangle.jl

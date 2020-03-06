@@ -1,21 +1,8 @@
-module visualize
-
-using ..potentials
-using ..fit
 
 using Bio3DView,
       Interact,
       Plots,
       PotentialCalculation
-
-
-export min_distance,
-       plot_potential,
-       plot_compare,
-       scan_compare,
-       scan_visualize,
-       visualize_points,
-       visualize_point_bio3dview
 
 
 """
@@ -175,5 +162,3 @@ function scan_visualize(points; i=4, html=false)
     end
     plt
 end
-
-end #module

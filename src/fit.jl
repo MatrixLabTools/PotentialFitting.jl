@@ -1,18 +1,4 @@
-module fit
 
-export FitData,
-       Fitter,
-       fit_potential!,
-       give_fittable_x,
-       give_predictable_x,
-       predict_potential,
-       rmsd,
-       setweight_e_less!,
-       setweight_e_more!
-
-
-using ScikitLearn
-using ..potentials, PotentialCalculation
 import StatsBase:rmsd
 
 
@@ -160,6 +146,3 @@ function rmsd(points, energy, mpp::MoleculePairPotential; emax=0, unit="cm^-1")
     ec = mpp.(points)
     return energy_to(rmsd(ec[i], energy[i]),unit)
 end
-
-
-end #module
