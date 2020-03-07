@@ -1,11 +1,3 @@
-module lennardjones
-
-using ..potentials
-using PotentialCalculation
-
-
-export LennardJones
-
 
 """
     LennardJones <: AbstractPairPotential
@@ -33,19 +25,19 @@ function Base.show(io::IO, potential::LennardJones; energy_unit="cm^-1")
 end
 
 
-function potentials.calculate_potential(cluster::AbstractCluster, potential::LennardJones, indices)
+function calculate_potential(cluster::AbstractCluster, potential::LennardJones, indices)
     r = distances(cluster, indices[1], indices[2])
     return potential(r)
 end
 
 
-function potentials.potential_variables(potential::LennardJones,
+function potential_variables(potential::LennardJones,
                              c::AbstractCluster, indices)
     r=distances(c, indices[1], indices[2])
     return [r^-6 r^-12]
 end
 
-function potentials.get_potential!(potential::LennardJones, x6, x12)
+function get_potential!(potential::LennardJones, x6, x12)
     potential.C6 = -x6
     potential.C12 = x12
     potential
@@ -55,6 +47,3 @@ function (p::LennardJones)(r)
     r6 = r.^-6
     muladd.(r6, p.C12, -p.C6) .* r6
 end
-
-
-end #module

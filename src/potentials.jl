@@ -1,19 +1,3 @@
-module potentials
-
-export AbstractPotential,
-       AbstractClusterPotential,
-       AbstractPairPotential,
-       calculate_potential,
-       get_potential!,
-       MoleculePairPotential,
-       PairPotentialTopology,
-       ClusterPotentialTopology,
-       potential_variables,
-       PotentialTopology
-
-using PotentialCalculation
-
-
 
 
 abstract type AbstractPotential end
@@ -223,7 +207,3 @@ function potential_variables(mpp::MoleculePairPotential, points)
     end
     return out
 end
-
-
-
-end #module

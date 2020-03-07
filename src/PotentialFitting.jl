@@ -49,16 +49,4 @@ include("potentials/GeneralAngle.jl")
 
 
 
-
-
-using .potentials
-using .fit
-using .visualize
-using .lennardjones
-using .generalpowers
-using .generalangle
-
-
-
-
 end # module

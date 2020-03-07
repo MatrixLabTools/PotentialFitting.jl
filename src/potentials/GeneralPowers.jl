@@ -1,11 +1,3 @@
-module generalpowers
-
-using ..potentials
-using PotentialCalculation
-
-
-export GeneralPowers
-
 
 # NOTE distance in potentials is ångströms when fitting.
 # But bohrs when CP2K calculates them. So that is why there is
@@ -40,14 +32,14 @@ function Base.show(io::IO, potential::GeneralPowers; energy_unit="hartree")
     end
 end
 
-function potentials.calculate_potential(potential::GeneralPowers, cluster::AbstractCluster, indices)
+function calculate_potential(potential::GeneralPowers, cluster::AbstractCluster, indices)
     # Convert from Å to bohr
     r = distances(cluster, indices[1], indices[2]) ./ 0.52917721090
     return potential(r)
 end
 
 
-function potentials.potential_variables(potential::GeneralPowers,
+function potential_variables(potential::GeneralPowers,
                             cluster::AbstractCluster, indices)
     # Convert from Å to bohr
     r= distances(cluster, indices[1], indices[2]) ./ 0.52917721090
@@ -55,13 +47,10 @@ function potentials.potential_variables(potential::GeneralPowers,
 end
 
 
-function potentials.get_potential!(potential::GeneralPowers, constants...)
+function get_potential!(potential::GeneralPowers, constants...)
     @assert length(constants) == length(potential.constants)  "length of constants with GeneralJones potential do not match"
     potential.constants .= constants
 end
 
 
 (p::GeneralPowers)(r) = sum([a.*(r./0.52917721090).^b for (a,b) in zip(p.constants, p.powers) ])
-
-
-end #module
