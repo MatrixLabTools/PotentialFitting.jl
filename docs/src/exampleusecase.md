@@ -88,8 +88,7 @@ scan_compare(data["Points"], data["Energy"], mpp, leg=true)
 ```
 
 If you found a place in the potential that is not well fitted and want to know
-where it is, you can visualize it. There are two options
-- `scan_visualize` Uses [Bio3DView](https://github.com/jgreener64/Bio3DView.jl) and needs IJulia (Jupyter notebook) or [Blink](https://github.com/JuliaGizmos/Blink.jl) to work.
+where it is, you can visualize it.
 - `visualize_points` This calls external program (defaults to VMD) for visualizations. Does not work with IJulia.
 
 To call them use
