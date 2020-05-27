@@ -1,6 +1,5 @@
 
-using Bio3DView,
-      Interact,
+using Interact,
       Plots,
       PotentialCalculation
 
@@ -91,18 +90,6 @@ function visualize_points(points; stdout=devnull, stderr=devnull, command="vmd")
     end
     run(pipeline(`$(command) $(fname)`, stdout=stdout, stderr=stderr))
     rm(fname)
-end
-
-"""
-visualize_point_bio3dview(point::Cluster; html=false)
-
-Visualize point using [Bio3DView](https://github.com/jgreener64/Bio3DView.jl).
-Can be used wit IJulia and on html
-"""
-function visualize_point_bio3dview(point::Cluster;  html=false)
-    s=sprint(print_xyz,point)
-    style= Style("sphere")
-    viewstring(s,"xyz",style=style, html=html)
 end
 
 
