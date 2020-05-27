@@ -17,3 +17,5 @@ To install use
 pkg> registry add https://github.com/MatrixLabTools/PackageRegistry
 pkg> add PotentialFitting
 ```
+
+Note that you might need to install [ScikitLearn](https://scikit-learn.org) manually
