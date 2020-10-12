@@ -4,13 +4,28 @@ To calculate potential energy surface refer to [PotentialCalculation](https://gi
 it for fitting by using
 
 ```@example 1
-using PotentialFitting, PotentialCalculation
+using PotentialFitting
 
 # There is an example potential in test/data directory
 using PotentialDB
 r = defaultregistry()
 data=loadpotential(r,"4")
 ```
+
+Potential can be viewed by energy
+
+```@example 1
+plot_potential(data)
+```
+
+and by geometry with external program (VMD here)
+
+```julia
+visualize_points(data["Points"]; command="vmd")
+```
+
+!!! note "Note"
+      This will fail when using IJulia. Due to IJulia closing external programs. 
 
 ## Setting up Molecules
 

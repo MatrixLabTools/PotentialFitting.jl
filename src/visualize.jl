@@ -5,7 +5,7 @@ using Interact,
 
 
 """
-min_distance(mpp::MoleculePairPotential, points)
+    min_distance(mpp::MoleculePairPotential, points)
 
 Gives minimum distance of molecules in `mpp` on given points.
 Used to help plotting.
@@ -16,36 +16,84 @@ function min_distance(mpp::MoleculePairPotential, points)
     return map(x-> minimum(distances(x[1:l1],x[l1+1:l1+l2])), points)
 end
 
+"""
+    min_distance(points, c1::AbstractCluster, c2::AbstractCluster)
+
+Minimum without needing fitted potential.
+"""
+function min_distance(points, c1::AbstractCluster, c2::AbstractCluster)
+    l1 = length(c1)
+    l2 = length(c2)
+    return map(x-> minimum(distances(x[1:l1],x[l1+1:l1+l2])), points)
+end
+
 
 """
-plot_potential(points, mpp::MoleculePairPotential; emax=100, unit="cm^-1",
-                        leg=false, size=(800,400), font=font(20))
+    plot_potential(points, mpp::MoleculePairPotential; emax=100, unit="cm^-1",
+                        leg=false, figsize=(800,400), font=font(20))
 
 Plots potential
 
 # Arguments
 - `points`  : array of [`Cluster`](@ref) where potential is plotted
 - `mpp::MoleculePairPotential`  : potential
+
+# Keywords
 - `emax=100`  : maximum energy in plot - cut all values with energy greater
-- `unit="cm^-1"`  : energy unit
-- `leg=false`     : draw legend
-- `size=(800,400)`   : size of picture
-- `font=font(20)`    : font size
+- `unit="cm^-1"`        : energy unit
+- `leg=false`           : draw legend
+- `figsize=(800,400)`   : size of picture
+- `font=font(20)`       : font size
 """
 function plot_potential(points, mpp::MoleculePairPotential; emax=100, unit="cm^-1",
-                        leg=false, size=(800,400), font=font(20))
+                        leg=false, figsize=(800,400), font=font(20))
     E = energy_to.(mpp.(points), unit)
     r = min_distance(mpp, points)
     i = E .< emax
     plot(r[i], E[i],
          xlabel = "Min distance   [Å]",
          ylabel = "Energy   ["*unit*"]",
-         label = "Fitted", size=size, tickfont=font)
+         label = "Fitted", size=figsize, tickfont=font)
+end
+
+"""
+    plot_potential(pes::Dict; emax=100, unit="cm^-1", figsize=(800,400), font=font(20))
+
+Plots calculated potential
+
+# Arguments
+- `pes::Dict`     : PES in Dict from that can be get with `load_data_file` command
+
+# Keywords
+- `emax=100`      : maximum energy in plot - cut all values with energy greater
+- `unit="cm^-1"`        : energy unit
+- `figsize=(800,400)`   : size of picture
+- `font=font(20)`       : font size
+"""
+function plot_potential(pes::Dict; emax=100, unit="cm^-1", figsize=(800,400), font=font(20))
+    @assert haskey(pes, "Energy")
+    @assert haskey(pes, "Points")
+    @assert haskey(pes, "cluster1")
+    @assert haskey(pes, "cluster2")
+    E = energy_to.(pes["Energy"], unit)
+    r = min_distance(pes["Points"], pes["cluster1"], pes["cluster2"])
+    s = size(E, 2)
+    plt = @manipulate for col in slider(1:s, label="Collumn")
+        i = E[:,col] .< emax
+        plot(r[:,col][i], E[:,col][i];
+              size=figsize,
+              font=font,
+              leg=false,
+              seriestype=:scatter,
+              xlabel = "Min distance   [Å]",
+              ylabel = "Energy   [$unit]")
+    end
+    plt
 end
 
 
 """
-plot_compare(points, energy, mpp::MoleculePairPotential...; emax=100, unit="cm^-1",
+    plot_compare(points, energy, mpp::MoleculePairPotential...; emax=100, unit="cm^-1",
                       leg=false, size=(800,400), font=font(20))
 
 Compares fitted energy to calculated one.
@@ -54,6 +102,8 @@ Compares fitted energy to calculated one.
 - `points`  : array of [`Cluster`](@ref) where potential is plotted
 - `energy`  : calculated energy
 - `mpp::MoleculePairPotential...`  : potentials to be fitted
+
+# Keywords
 - `emax=100`  : maximum energy in plot - cut all values with energy greater
 - `unit="cm^-1"`  : energy unit
 - `leg=false`     : draw legend
@@ -61,12 +111,12 @@ Compares fitted energy to calculated one.
 - `font=font(20)`    : font size
 """
 function plot_compare(points, energy, mpp::MoleculePairPotential...; emax=100, unit="cm^-1",
-                      leg=false, size=(800,400), font=font(20))
+                      leg=false, figsize=(800,400), font=font(20))
     Ecal = energy_to.(energy, unit)
     r = min_distance(mpp[1], points)
     i = Ecal .< emax
     out=plot(r[i], Ecal[i], xlabel="Min Distance  [Å]", ylabel="Energy   [$unit]",  label="Calculated",
-         leg=leg, size=size, tickfont=font, seriestype=:scatter)
+         leg=leg, size=figsize, tickfont=font, seriestype=:scatter)
 
     for x in mpp
         Efit = energy_to.(x.(points), unit)
@@ -95,7 +145,7 @@ end
 
 """
 scan_compare(points,energy, mppe...; emax=100, unit="cm^-1",
-                      leg=false, fsize=(800,400))
+                      leg=false, figsize=(800,400))
 
 Use [`Interact`](https://juliagizmos.github.io/Interact.jl/stable/) to view
 potentials ineractively on different points.
@@ -106,13 +156,15 @@ Visualization is done on collumn vise.
 - `points`  : array of points, first dimension is displayd while second can be chosen
 - `energy`  : array of reference energy, first dimension is displayd while second can be chosen
 - `mppe...` : [`MoleculePairPotential`](@ref) which are plotted
+
+# Keywords
 - `emax=100`  : maximum energy in plot - cut all values with energy greater
 - `unit="cm^-1"`  : energy unit
 - `leg=false`     : draw legend
-- `size=(800,400)`   : size of picture
+- `figsize=(800,400)`   : size of picture
 """
 function scan_compare(points,energy, mppe...; emax=100, unit="cm^-1",
-                      leg=false, fsize=(800,400))
+                      leg=false, figsize=(800,400))
     @assert size(points) == size(energy) "points and energy need to have same size"
     e = energy_from(emax,unit)
     s=size(points)
@@ -121,31 +173,7 @@ function scan_compare(points,energy, mppe...; emax=100, unit="cm^-1",
     display(wdg)
 
     plt = @manipulate for x in wdg, col in slider(1:s[2], label="Collumn")
-        plot_compare(points[:,col],energy[:,col], mppe..., emax=energy_to(e,x), unit=x, leg=leg, size=fsize)
-    end
-    plt
-end
-
-
-"""
-scan_vizualize(points; i=4, html=false)
-
-Visualize geometry of points interactively using [`Interact`](https://juliagizmos.github.io/Interact.jl/stable/)
-
-
-# Arguments
-- `points`  : array of points, first dimension is displayd while second can be chosen for index manipulation
-- `i=4`     : row index at with visialization is done
-- `html=false` : if true give output as string of html
-"""
-function scan_visualize(points; i=4, html=false)
-    s = size(points)
-    plt = @manipulate for col in slider(1:s[2], label="Collumn")
-        if length(points[:,col]) >= i
-            visualize_point_bio3dview(points[i,col], html=html)
-        else
-            visualize_point_bio3dview(points[1,col], html=html)
-        end
+        plot_compare(points[:,col],energy[:,col], mppe..., emax=energy_to(e,x), unit=x, leg=leg, size=figsize)
     end
     plt
 end
