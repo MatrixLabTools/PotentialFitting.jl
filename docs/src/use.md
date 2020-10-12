@@ -15,6 +15,13 @@ data=loadpotential(r,"4")
 Potential can be viewed by energy
 
 ```@example 1
+# Collumn 1 from data
+plot_potential(data,1)
+```
+
+or ineractively
+
+```julia
 plot_potential(data)
 ```
 
@@ -25,7 +32,7 @@ visualize_points(data["Points"]; command="vmd")
 ```
 
 !!! note "Note"
-      This will fail when using IJulia. Due to IJulia closing external programs. 
+      This will fail when using IJulia. Due to IJulia closing external programs.
 
 ## Setting up Molecules
 

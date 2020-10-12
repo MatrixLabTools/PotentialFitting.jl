@@ -51,7 +51,7 @@ function plot_potential(points, mpp::MoleculePairPotential; emax=100, unit="cm^-
     r = min_distance(mpp, points)
     i = E .< emax
     plot(r[i], E[i],
-         xlabel = "Min distance   [Å]",
+         xlabel = "Distance   [Å]",
          ylabel = "Energy   ["*unit*"]",
          label = "Fitted", size=figsize, tickfont=font)
 end
@@ -85,9 +85,29 @@ function plot_potential(pes::Dict; emax=100, unit="cm^-1", figsize=(800,400), fo
               font=font,
               leg=false,
               seriestype=:scatter,
-              xlabel = "Min distance   [Å]",
+              xlabel = "Distance   [Å]",
               ylabel = "Energy   [$unit]")
     end
+    plt
+end
+
+
+function plot_potential(pes::Dict, i::Int; emax=100, unit="cm^-1", figsize=(800,400), font=font(20))
+    @assert haskey(pes, "Energy")
+    @assert haskey(pes, "Points")
+    @assert haskey(pes, "cluster1")
+    @assert haskey(pes, "cluster2")
+    E = energy_to.(pes["Energy"][:,i], unit)
+    r = min_distance(pes["Points"][:,i], pes["cluster1"], pes["cluster2"])
+    j = E .< emax
+    plt=plot(r[j], E[j];
+          size=figsize,
+          font=font,
+          leg=false,
+          seriestype=:scatter,
+          xlabel = "Distance   [Å]",
+          ylabel = "Energy   [$unit]")
+
     plt
 end
 
