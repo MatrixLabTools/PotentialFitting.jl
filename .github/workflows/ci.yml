@@ -42,10 +42,11 @@ jobs:
             ${{ runner.os }}-test-${{ env.cache-name }}-
             ${{ runner.os }}-test-
             ${{ runner.os }}-
-      - uses: julia-actions/julia-buildpkg@v1
       - name: MatrixLabTools repo install
         run: julia --color=yes --check-bounds=yes -e 'using Pkg;
-               Pkg.Registry.add(RegistrySpec(url="https://github.com/MatrixLabTools/PackageRegistry"))'
+               Pkg.Registry.add(RegistrySpec(url="https://github.com/MatrixLabTools/PackageRegistry"));
+               Pkg.Registry.add(RegistrySpec(url="https://github.com/JuliaRegistries/General"));'
+      - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
       - uses: julia-actions/julia-processcoverage@v1
       - uses: codecov/codecov-action@v1
