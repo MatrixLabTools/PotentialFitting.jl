@@ -1,7 +1,7 @@
 name = "PotentialFitting"
 uuid = "ec7fb60e-ec45-11e8-1605-2d81b01dfc43"
 authors = ["Teemu Järvinen <teemu.j.jarvinen@student.jyu.fi>"]
-version = "0.2.2"
+version = "0.3.0-DEV"
 
 [deps]
 Interact = "c601a237-2ae4-5e1e-952c-7a85b0c7eef1"
@@ -15,7 +15,7 @@ StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 [compat]
 Interact = "0.10"
 Plots = "1.5"
-PotentialCalculation = "0.3, 1"
+PotentialCalculation = "0.3, 0.4"
 Reexport = "0.2, 1.0"
 ScikitLearn = "0.6"
 StatsBase = "0.33"

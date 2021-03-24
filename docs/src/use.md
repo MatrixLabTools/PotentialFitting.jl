@@ -40,8 +40,7 @@ Next part in defining topology for the potential. This is started by creating tw
 molecules. The information is in the loaded file.
 
 ```@repl 1
-m1=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster1"].atoms)
-m2=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster2"].atoms)
+m1, m2 = get_molecules(data)
 ```
 
 If needed atoms can be flagged as identical.
@@ -81,9 +80,10 @@ information for it  in the topology.
 
 ```@example 1
 # Atoms 2 and 3 of molecule 1 have same potential to to atom 1 of molecule 2
-push!(topo,
+push!(
+      topo,
       PairPotentialTopology(LennardJones(), [(2,6), (3,6)])
-     )
+)
 nothing # hide
 ```
 
@@ -91,12 +91,14 @@ nothing # hide
 If default form of potential is not enough it can be tuned, by giving it as an input.
 
 ```@example 1
-push!(topo,
+push!(
+      topo,
       PairPotentialTopology(GeneralPowers(-6,-12), 4,6)
-     )
-push!(topo,
+)
+push!(
+     topo,
      PairPotentialTopology(GeneralPowers(-6,-8, -10, -12), 5,6)
-    )
+)
 nothing # hide
 ```
 
@@ -118,6 +120,10 @@ To do fitting itself we need to prepare fit data.
 
 ```@example 1
 fdata = FitData(mpp, data["Points"], data["Energy"])
+
+# Also this works and can be used add data from different sources
+# fdata = FitData(mpp, data1, data2,...)
+
 nothing # hide
 ```
 

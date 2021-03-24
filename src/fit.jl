@@ -5,6 +5,18 @@ import StatsBase:rmsd
 @sk_import linear_model: LinearRegression
 
 """
+    get_molecules(data::Dict)
+
+Returns molecules from data file.
+This is usability function that is meant to simplify things.
+"""
+function get_molecules(data::Dict)
+    m1=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster1"].atoms)
+    m2=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster2"].atoms)
+    return m1, m2
+end
+
+"""
     FitData
 
 Structure to help potential parameters fitting.
@@ -13,21 +25,41 @@ Structure to help potential parameters fitting.
 - `variables` : variables
 - `E`         : energy
 - `w`         : weights
+
+# Creation
+    FitData(mpp, points, energy)
+    FitData(mpp, data::Dict...)
+
+- `data::Dict`   :  Dict that is returned by `load_data_file`
+
 """
 mutable struct FitData
     "Variables"
-    variables
+    variables::Vector{Any}
     "Energy"
-    E
+    E::Vector{Float64}
     "Weights"
-    w
-    function FitData(mpp, cluster1, cluster2, energy)
-        #TODO add methid to take account identical atoms
-        new( potential_variables(mpp,cluster1,cluster2) , vcat(energy...) , ones(length(energy)))
+    w::Vector{Float64}
+    function FitData(mpp::MoleculePairPotential, points, energy)
+        new( potential_variables(mpp,points) , vec(energy), ones(length(energy)))
     end
-    function FitData(mpp,points,energy)
-        new( potential_variables(mpp,points) , vcat(energy...) , ones(length(energy)))
+end
+
+
+function FitData(mpp::MoleculePairPotential, data::Dict...)
+    for x in data
+        @assert haskey(x, "Energy")
+        @assert haskey(x, "Points")
     end
+    @assert all( x->x["cluster1"] == data[1]["cluster1"], data)
+    @assert all( x->x["cluster2"] == data[1]["cluster2"], data)
+
+    ptmp = [x["Points"] for x in data]
+    points = hcat(ptmp...)
+    etmp = [x["Energy"] for x in data]
+    energy = hcat(etmp...)
+    
+    return FitData(mpp, points, energy)
 end
 
 

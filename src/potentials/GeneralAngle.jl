@@ -36,15 +36,6 @@ function Base.show(io::IO, potential::GeneralAngle; energy_unit="cm^-1")
 end
 
 
-function calculate_potential(potential::GeneralAngle,
-                                     cluster::AbstractCluster, indices)
-    # Convert from Å to bohr
-    r = distances(cluster, indices[1], indices[2]) ./ 0.52917721090
-    θ = cluster_angle(cluster, indices[1], indices[2], indices[3])
-    return potential(r,θ)
-end
-
-
 function potential_variables(potential::GeneralAngle,
                             cluster::AbstractCluster, indices)
     # Convert from Å to bohr

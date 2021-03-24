@@ -193,7 +193,7 @@ function scan_compare(points,energy, mppe...; emax=100, unit="cm^-1",
     display(wdg)
 
     plt = @manipulate for x in wdg, col in slider(1:s[2], label="Collumn")
-        plot_compare(points[:,col],energy[:,col], mppe..., emax=energy_to(e,x), unit=x, leg=leg, size=figsize)
+        plot_compare(points[:,col],energy[:,col], mppe..., emax=energy_to(e,x), unit=x, leg=leg, figsize=figsize)
     end
-    plt
+    return plt
 end

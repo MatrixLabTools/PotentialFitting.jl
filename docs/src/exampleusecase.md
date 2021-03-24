@@ -28,8 +28,7 @@ First we create a potential for fitting.
 ```@example md
 using PotentialFitting, PotentialCalculation
 
-m1=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster1"].atoms)
-m2=MoleculeIdenticalInformation{AtomOnlySymbol}(data["cluster2"].atoms)
+m1, m2 = get_molecules(data)
 
 mpp = MoleculePairPotential(m1,m2, GeneralPowers(-6,-8,-10,-12,-7,-9,-11))
 ```

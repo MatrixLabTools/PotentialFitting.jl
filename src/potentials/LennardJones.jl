@@ -25,12 +25,6 @@ function Base.show(io::IO, potential::LennardJones; energy_unit="cm^-1")
 end
 
 
-function calculate_potential(cluster::AbstractCluster, potential::LennardJones, indices)
-    r = distances(cluster, indices[1], indices[2])
-    return potential(r)
-end
-
-
 function potential_variables(potential::LennardJones,
                              c::AbstractCluster, indices)
     r=distances(c, indices[1], indices[2])
@@ -40,10 +34,11 @@ end
 function get_potential!(potential::LennardJones, x6, x12)
     potential.C6 = -x6
     potential.C12 = x12
-    potential
+    return potential
 end
 
-function (p::LennardJones)(r)
-    r6 = r.^-6
-    muladd.(r6, p.C12, -p.C6) .* r6
+
+function (p::LennardJones)(r::Number)::Float64
+    r6 = r^-6
+    muladd(r6, p.C12, -p.C6) * r6
 end

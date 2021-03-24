@@ -1,4 +1,5 @@
 [deps]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 PotentialCalculation = "76415700-ec45-11e8-0f65-f1df3c899b21"
+PotentialDB = "e899a7e1-cf22-409b-b35c-84b9d10c2c8e"
 ScikitLearn = "3646fa90-6ef7-5e7e-9f22-8aca16db6324"

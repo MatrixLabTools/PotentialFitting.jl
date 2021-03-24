@@ -111,7 +111,7 @@ Calculates energy from given potential.
 """
 function calculate_potential(potential::AbstractPairPotential, cluster::AbstractCluster, indices)
     r = distances(cluster, indices[1], indices[2])
-    potential(r)
+    return potential(r)
 end
 
 
@@ -138,11 +138,11 @@ Structure to hold potential information between two molecules
 """
 mutable struct MoleculePairPotential
     "Molecule 1"
-    mol1#::MoleculeIdenticalInformation{AtomOnlySymbol}
+    mol1::MoleculeIdenticalInformation{AtomOnlySymbol}
     "Molecule 2"
-    mol2#::MoleculeIdenticalInformation{AtomOnlySymbol}
+    mol2::MoleculeIdenticalInformation{AtomOnlySymbol}
     "Holds potential (index 1) and indexes for atoms (index 2)"
-    topology::Vector{Any}
+    topology::Vector{AbstractPotentialTopology}
     function MoleculePairPotential(mol1::AbstractMolecule,mol2::AbstractMolecule, potential::AbstractPotential)
         topology = Vector{PairPotentialTopology}()
         l = length(mol1)
@@ -199,11 +199,11 @@ Array holding an array for each potential term in `mpp.topology` that can the be
 function potential_variables(mpp::MoleculePairPotential, points)
     out =[]
     for x in mpp.topology
-    tmp=[]
+        tmp=[]
         for y in x.indices
             push!(tmp,vcat(map(z->  potential_variables(x.potential, z, y), points)...) )
         end
-    push!(out,+(tmp...))
+        push!(out,+(tmp...))
     end
     return out
 end
