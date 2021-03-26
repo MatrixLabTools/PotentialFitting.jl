@@ -1,7 +1,7 @@
 name = "PotentialFitting"
 uuid = "ec7fb60e-ec45-11e8-1605-2d81b01dfc43"
 authors = ["Teemu Järvinen <teemu.j.jarvinen@student.jyu.fi>"]
-version = "0.2.2"
+version = "0.2.3"
 
 [deps]
 Interact = "c601a237-2ae4-5e1e-952c-7a85b0c7eef1"
