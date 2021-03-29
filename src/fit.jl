@@ -47,18 +47,27 @@ end
 
 
 function FitData(mpp::MoleculePairPotential, data::Dict...)
+    function _samemolecule(c1, c2)
+        if length(c1) != length(c2)
+            return false
+        elseif all(c1.atoms .== c2.atoms)
+            return true
+        else
+            return false
+        end
+    end
     for x in data
         @assert haskey(x, "Energy")
         @assert haskey(x, "Points")
     end
-    @assert all( x->x["cluster1"] == data[1]["cluster1"], data)
-    @assert all( x->x["cluster2"] == data[1]["cluster2"], data)
+    @assert all( x-> _samemolecule(x["cluster1"], data[1]["cluster1"]), data)
+    @assert all( x-> _samemolecule(x["cluster2"], data[1]["cluster2"]), data)
 
     ptmp = [x["Points"] for x in data]
     points = hcat(ptmp...)
     etmp = [x["Energy"] for x in data]
     energy = hcat(etmp...)
-    
+
     return FitData(mpp, points, energy)
 end
 
